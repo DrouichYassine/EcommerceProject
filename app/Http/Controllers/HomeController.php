@@ -15,11 +15,16 @@ class HomeController extends Controller
         return view('home.userpage');
     }
     public function redirect(){
-        $usertype=Auth::user()->usertype;
-        if($usertype=='1'){
-            return view('admin.home');
-        }else{
-            return view('dashboard');
+        if(Auth::check()) {
+            $usertype = Auth::user()->usertype;
+            if($usertype=='1'){
+                return view('admin.home');
+            }else{
+                return view('home.userpage');
+            }
+        } else {
+            // Redirect unauthenticated users to login page
+            return redirect()->route('login');
         }
     }
     

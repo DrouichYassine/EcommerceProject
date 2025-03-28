@@ -36,6 +36,7 @@
                 <li class="nav-item">
                   <a class="nav-link me-4" href="#latest-blog">Blog</a>
                 </li>
+                
                 <li class="nav-item dropdown">
                   <a class="nav-link me-4 dropdown-toggle link-dark" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Pages</a>
                   <ul class="dropdown-menu">
@@ -65,30 +66,34 @@
                     </li>
                   </ul>
                 </li>
+                @if (Route::has('login'))
+                @auth
+                <li class="nav-item dropdown">
+                  <a class="nav-link me-4 dropdown-toggle link-dark" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
+                    <i class="fa fa-user"></i> Account
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a href="{{ route('profile.show') }}" class="dropdown-item">Profile</a>
+                    </li>
+                    <li>
+                      <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="dropdown-item">Logout</button>
+                      </form>
+                    </li>
+                  </ul>
+                </li>
+                
+                @else
                 <li class="nav-item">
-                  <div class="user-items ps-5">
-                    <ul class="d-flex justify-content-end list-unstyled">
-                      <li class="search-item pe-3">
-                        <a href="#" class="search-button">
-                          <svg class="search">
-                            <use xlink:href="#search"></use>
-                          </svg>
-                        </a>
-                      </li>
-                      <li class="pe-3">
-                        <a href="#">
-                          <svg class="user">
-                            <use xlink:href="#user"></use>
-                          </svg>
-                        </a>
-                      </li>
-                      <li>
-                        <a href="cart.html">
-                          <svg class="cart">
-                            <use xlink:href="#cart"></use>
-                          </svg>
-                        </a>
-                      </li>
+                  <a class="btn btn-primary" href="{{ route('login') }}">logout</a>
+                </li>
+                <li class="nav-item">
+                  <a class="btn btn-success" href="{{ route('register') }}" >register</a>
+                </li>
+                @endauth
+                @endif
                     </ul>
                   </div>
                 </li>
