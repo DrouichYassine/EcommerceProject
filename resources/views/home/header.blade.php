@@ -86,17 +86,21 @@
                 </li>
                 
                 @else
-                <li class="nav-item">
-                  <a class="btn btn-primary" href="{{ route('login') }}">logout</a>
-                </li>
-                <li class="nav-item">
-                  <a class="btn btn-success" href="{{ route('register') }}" >register</a>
+                <li class="nav-item dropdown">
+                  <a class="nav-link me-4 dropdown-toggle link-dark" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
+                    <i class="fa fa-user"></i> Account
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a href="{{ route('login') }}" class="dropdown-item">Login</a>
+                    </li>
+                    <li>
+                      <a href="{{ route('register') }}" class="dropdown-item">Register</a>
+                    </li>
+                  </ul>
                 </li>
                 @endauth
                 @endif
-                    </ul>
-                  </div>
-                </li>
               </ul>
             </div>
           </div>

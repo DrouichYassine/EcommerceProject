@@ -150,6 +150,43 @@
                   <p class="p-3 mb-0 text-center">See all notifications</p>
                 </div>
               </li>
-              
+                <li class="nav-item dropdown">
+                <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
+                  <div class="navbar-profile">
+                  <img class="img-xs rounded-circle" src="assets/images/faces/face15.jpg" alt="">
+                  <p class="mb-0 d-none d-sm-block navbar-profile-name">{{ Auth::user()->name ?? 'User' }}</p>
+                  <i class="mdi mdi-menu-down d-none d-sm-block"></i>
+                  </div>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="profileDropdown">
+                  <h6 class="p-3 mb-0">Profile</h6>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item preview-item" href="{{ url('profile') }}">
+                  <div class="preview-thumbnail">
+                    <div class="preview-icon bg-dark rounded-circle">
+                    <i class="mdi mdi-account text-success"></i>
+                    </div>
+                  </div>
+                  <div class="preview-item-content">
+                    <p class="preview-subject mb-1">My Profile</p>
+                  </div>
+                  </a>
+                  <div class="dropdown-divider"></div>
+                  <form method="POST" action="{{ route('logout') }}">
+                  @csrf
+                  <a class="dropdown-item preview-item" href="{{ route('logout') }}" 
+                     onclick="event.preventDefault(); this.closest('form').submit();">
+                    <div class="preview-thumbnail">
+                    <div class="preview-icon bg-dark rounded-circle">
+                      <i class="mdi mdi-logout text-danger"></i>
+                    </div>
+                    </div>
+                    <div class="preview-item-content">
+                    <p class="preview-subject mb-1">Log out</p>
+                    </div>
+                  </a>
+                  </form>
+                </div>
+                </li></div>
           </div>
         </nav>
