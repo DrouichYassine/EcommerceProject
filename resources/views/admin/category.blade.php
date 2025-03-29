@@ -58,9 +58,11 @@
                 <tr>
                     <td>{{ $data->category_name }}</td>
                     <td>
-                      <a onclick="return confirm('Are you sure?')" 
-                         href="{{ url('delete_category', $data->id) }}" 
-                         class="btn btn-danger">Delete</a>
+                      <form action="{{ route('delete_category', ['id' => $data->id]) }}" method="POST" style="display: inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
+                      </form>
                     </td>
                 </tr>
                 @endforeach
