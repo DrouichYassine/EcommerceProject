@@ -1,77 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Category Management</title>
     @include('admin.css')
-    <style type="text/css">
-        .div-center{
-            text-align: center;
-            padding-top: 40px;
-        }
-        </style>
   </head>
   <body>
     <div class="container-scroller">
-      <!-- partial:partials/_sidebar.html -->
       @include('admin.sidebar')
-      <!-- partial -->
-      @include('admin.header')
-    <div class="main-panel">
-      <div class="content-wrapper">
-        @if(session()->has('message'))
-      <div class="alert alert-success">
-        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-        {{ session()->get('message') }}
-
-      </div>
-        @endif
-        <div class="div-center"></div>
-            <h1>Add Category</h1>
-            
-            @if(session()->has('message'))
-            <div class="alert alert-success">
-              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-              {{ session()->get('message') }}
+      <div class="container-fluid page-body-wrapper">
+        @include('admin.header')
+        <div class="main-panel">
+          <div class="content-wrapper">
+            <div class="row">
+              <div class="col-12 grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="card-title">Add Category</h4>
+                    
+                    @if(session()->has('message'))
+                      <div class="alert alert-success">
+                        {{ session()->get('message') }}
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                      </div>
+                    @endif
+                    
+                    <form class="forms-sample" action="{{ url('/add_category') }}" method="POST">
+                      @csrf
+                      <div class="form-group">
+                        <label for="category_name">Category Name</label>
+                        <input type="text" class="form-control" name="category_name" placeholder="Category Name" required>
+                      </div>
+                      <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
             </div>
-            @endif
             
-            <form action="{{ url('/add_category') }}" method="POST">
-              @csrf
-              <div style="padding:15px;">
-                <label>Category Name</label>
-                <input type="text" name="category_name" class="form-control" placeholder="Write category name" style="color: white;" required>
+            <div class="row">
+              <div class="col-lg-12 grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="card-title">Categories</h4>
+                    <div class="table-responsive">
+                      <table class="table table-striped">
+                        <thead>
+                          <tr>
+                            <th>Category Name</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          @foreach($categories as $category)
+                          <tr>
+                            <td>{{ $category->category_name }}</td>
+                            <td>
+                              <a onclick="return confirm('Are you sure you want to delete this?')" href="{{ url('delete_category', $category->id) }}" class="btn btn-danger">Delete</a>
+                            </td>
+                          </tr>
+                          @endforeach
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
               </div>
-              
-              <div style="padding:15px;">
-                <input type="submit" class="btn btn-primary" value="Add Category">
-              </div>
-            </form>
-            
-            <table class="table table-bordered mt-4">
-              <thead>
-                <tr>
-                    <th>Category Name</th>
-                    <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                @foreach($data as $data)
-                <tr>
-                    <td>{{ $data->category_name }}</td>
-                    <td>
-                      <form action="{{ route('delete_category', ['id' => $data->id]) }}" method="POST" style="display: inline;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
-                      </form>
-                    </td>
-                </tr>
-                @endforeach
-              </tbody>
-            </table>
+            </div>
+          </div>
         </div>
       </div>
-    </div></td>
-   @include('admin.script')
-    <!-- End custom js for this page -->
+    </div>
+    @include('admin.script')
   </body>
 </html>

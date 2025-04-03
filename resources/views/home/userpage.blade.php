@@ -10,15 +10,46 @@
     <meta name="author" content="">
     <meta name="keywords" content="">
     <meta name="description" content="">
-    <link rel="stylesheet" type="text/css" href="home/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="home/style.css">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Theme CSS -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('home/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('home/style.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
-    <!-- script
-    ================================================== -->
-    <script src="home/js/modernizr.js"></script>
+    
+    <!-- Fix dropdown styles -->
+    <style>
+      .dropdown-menu {
+        margin-top: 0;
+      }
+      .dropdown:hover .dropdown-menu {
+        display: block;
+      }
+      
+      /* Fix icon display */
+      .fa-user, .fa-shopping-cart {
+        font-size: 16px;
+      }
+      
+      /* Badge positioning */
+      .badge {
+        position: relative;
+        top: -8px;
+        left: -5px;
+        font-size: 0.7em;
+      }
+    </style>
+    
+    <!-- script -->
+    <script src="{{ asset('home/js/modernizr.js') }}"></script>
   </head>
   <body data-bs-spy="scroll" data-bs-target="#navbar" data-bs-root-margin="0px 0px -40%" data-bs-smooth-scroll="true" tabindex="0">
     <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
@@ -32,9 +63,9 @@
       <symbol xmlns="http://www.w3.org/2000/svg" id="cart" viewBox="0 0 16 16">
         <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
       </symbol>
-      <svg xmlns="http://www.w3.org/2000/svg" id="chevron-left" viewBox="0 0 16 16">
+      <symbol xmlns="http://www.w3.org/2000/svg" id="chevron-left" viewBox="0 0 16 16">
         <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z" />
-      </svg>
+      </symbol>
       <symbol xmlns="http://www.w3.org/2000/svg" id="chevron-right" viewBox="0 0 16 16">
         <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
       </symbol>
@@ -128,11 +159,13 @@
         </div>
     </div>
     
+    <!-- Include header -->
     @include('home.header')
+    
+    <!-- Include content sections -->
     @include('home.slider')
     @include('home.services')
     @include('home.products')
-    @include('home.smartwatch')
     @include('home.yearlysale')
     @include('home.latestposts')
     @include('home.testimonials')
@@ -147,8 +180,8 @@
             <div class="Shipping d-flex">
               <p>We ship with:</p>
               <div class="card-wrap ps-2">
-                <img src="images/dhl.png" alt="visa">
-                <img src="images/shippingcard.png" alt="mastercard">
+                <img src="{{ asset('images/dhl.png') }}" alt="dhl">
+                <img src="{{ asset('images/shippingcard.png') }}" alt="shipping">
               </div>
             </div>
           </div>
@@ -156,25 +189,38 @@
             <div class="payment-method d-flex">
               <p>Payment options:</p>
               <div class="card-wrap ps-2">
-                <img src="images/visa.jpg" alt="visa">
-                <img src="images/mastercard.jpg" alt="mastercard">
-                <img src="images/paypal.jpg" alt="paypal">
+                <img src="{{ asset('images/visa.jpg') }}" alt="visa">
+                <img src="{{ asset('images/mastercard.jpg') }}" alt="mastercard">
+                <img src="{{ asset('images/paypal.jpg') }}" alt="paypal">
               </div>
             </div>
           </div>
           <div class="col-md-4 col-sm-6">
             <div class="copyright">
-              <p>© Copyright 2023 MiniStore. Design by <a href="https://templatesjungle.com/">TemplatesJungle</a> Distribution by <a href="https://themewagon.com">ThemeWagon</a>
+              <p>© Copyright 2025 MiniStore. Design by <a href="https://templatesjungle.com/">TemplatesJungle</a> Distribution by <a href="https://themewagon.com">ThemeWagon</a>
               </p>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <script src="home/js/jquery-1.11.0.min.js"></script>
+    
+    <!-- Required scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
-    <script type="text/javascript" src="home/js/bootstrap.bundle.min.js"></script>
-    <script type="text/javascript" src="home/js/plugins.js"></script>
-    <script type="text/javascript" src="home/js/script.js"></script>
+    <script src="{{ asset('home/js/plugins.js') }}"></script>
+    <script src="{{ asset('home/js/script.js') }}"></script>
+    
+    <!-- Special script for initializing dropdowns -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Initialize Bootstrap dropdowns
+        var dropdownElementList = [].slice.call(document.querySelectorAll('.dropdown-toggle'))
+        dropdownElementList.forEach(function (dropdownToggleEl) {
+          new bootstrap.Dropdown(dropdownToggleEl);
+        });
+      });
+    </script>
   </body>
 </html>

@@ -1,0 +1,40 @@
+// ...existing code...
+
+/* Submenu styling */
+#sidebar ul li ul.collapse {
+    padding-left: 10px;
+}
+
+#sidebar ul li ul li {
+    background: rgba(0, 0, 0, 0.2);
+    border-left: 3px solid transparent;
+}
+
+#sidebar ul li ul li.active {
+    border-left: 3px solid #4e73df;
+}
+
+#sidebar ul li ul li a {
+    padding: 10px 10px 10px 20px;
+    font-size: 0.9em;
+}
+
+/* Dropdown arrow icon */
+a[data-toggle="collapse"] {
+    position: relative;
+}
+
+a[data-toggle="collapse"]::after {
+    content: '\f078';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    position: absolute;
+    right: 15px;
+    transition: transform 0.3s;
+}
+
+a[aria-expanded="true"]::after {
+    transform: rotate(180deg);
+}
+
+// ...existing code...

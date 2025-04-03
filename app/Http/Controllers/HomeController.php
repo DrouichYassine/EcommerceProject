@@ -3,29 +3,148 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use Illuminate\Support\Facades\Auth;
-
-
 use App\Models\User;
+use App\Models\Product;
+use App\Models\Cart;
 
 class HomeController extends Controller
 {
-    public function index(){
-        return view('home.userpage');
+    public function index()
+    {
+        $products = Product::paginate(9);
+        return view('home.userpage', compact('products'));
     }
-    public function redirect(){
-        if(Auth::check()) {
-            $usertype = Auth::user()->usertype;
-            if($usertype=='1'){
-                return view('admin.home');
-            }else{
-                return view('home.userpage');
+    
+    public function redirect()
+    {
+        $usertype = Auth::user()->usertype;
+        
+        if($usertype == '1')
+    {
+        // Get statistics for admin dashboard
+        $total_products = Product::count();
+        $total_orders = 0; // Replace with actual order count when you have an Order model
+        $total_customers = User::where('usertype', '0')->count();
+        $total_revenue = 0; // Replace with actual revenue calculation when you have order data
+        
+        return view('admin.home', compact(
+            'total_products',
+            'total_orders',
+            'total_customers',
+            'total_revenue'
+        ));
+    }
+    else
+    {
+        $products = Product::paginate(9);
+        return view('home.userpage', compact('products'));
+    }
+    }
+    
+    public function all_products()
+    {
+        $products = Product::paginate(9);
+        return view('home.products', compact('products'));
+    }
+    
+    public function product_details($id)
+    {
+        $product = Product::findOrFail($id);
+        return view('home.product_details', compact('product'));
+    }
+    
+    public function add_cart(Request $request, $id)
+    {
+        if(Auth::id())
+        {
+            $user = Auth::user();
+            $product = Product::find($id);
+            
+            // Check if product exists
+            if(!$product) {
+                return redirect()->back()->with('error', 'Product not found');
             }
-        } else {
-            // Redirect unauthenticated users to login page
+            
+            // Get quantity from request or default to 1
+            $quantity = $request->quantity ?? 1;
+            
+            // Check if item is already in cart
+            $cart = Cart::where('user_id', $user->id)
+                        ->where('product_id', $id)
+                        ->first();
+            
+            if($cart) {
+                // Update quantity if already in cart
+                $cart->quantity += $quantity;
+                $cart->save();
+            } else {
+                // Create new cart item
+                $cart = new Cart;
+                $cart->name = $user->name;
+                $cart->email = $user->email;
+                $cart->phone = $user->phone ?? '';
+                $cart->address = $user->address ?? '';
+                $cart->user_id = $user->id;
+                
+                $cart->product_title = $product->title;
+                $cart->product_id = $product->id;
+                
+                if($product->discount_price) {
+                    $cart->price = $product->discount_price * $quantity;
+                } else {
+                    $cart->price = $product->price * $quantity;
+                }
+                
+                $cart->image = $product->image;
+                $cart->quantity = $quantity;
+                
+                $cart->save();
+            }
+            
+            return redirect()->back()->with('message', 'Product added to cart successfully!');
+        }
+        else
+        {
+            // Store intended URL in session
+            $request->session()->put('url.intended', url()->current());
+            
             return redirect()->route('login');
         }
     }
     
+    public function show_cart()
+    {
+        if(Auth::id())
+        {
+            $id = Auth::user()->id;
+            $cart = Cart::where('user_id', $id)->get();
+            return view('home.showcart', compact('cart'));
+        }
+        else
+        {
+            // Store intended URL in session
+            session(['url.intended' => url('/show_cart')]);
+            
+            return redirect()->route('login');
+        }
+    }
+    
+    public function remove_cart($id)
+    {
+        $cart = Cart::find($id);
+        
+        if($cart && $cart->user_id == Auth::id()) {
+            $cart->delete();
+        }
+        
+        return redirect()->back()->with('message', 'Item removed from cart successfully!');
+    }
+    
+    public function account()
+    {
+        $user = Auth::user();
+        $orders = []; // Replace with actual orders if you have them
+        return view('home.account', compact('user', 'orders'));
+    }
 }
