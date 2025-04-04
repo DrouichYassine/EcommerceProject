@@ -6,6 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Product Management</title>
     @include('admin.css')
+    <style>
+      .form-control {
+        color: white !important;
+      }
+      .form-control::placeholder {
+        color: #6c757d !important;
+      }
+    </style>
   </head>
   <body>
     <div class="container-scroller">
@@ -60,12 +68,9 @@
                       </div>
                       <div class="form-group">
                         <label>Product Image</label>
-                        <input type="file" name="image" class="file-upload-default" required>
-                        <div class="input-group col-xs-12">
-                          <input type="text" class="form-control file-upload-info" disabled placeholder="Upload Image">
-                          <span class="input-group-append">
-                            <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
-                          </span>
+                        <!-- Replace the custom file upload with a simpler implementation -->
+                        <div class="input-group">
+                          <input type="file" name="image" class="form-control" required style="height: auto;">
                         </div>
                       </div>
                       <button type="submit" class="btn btn-primary mr-2">Submit</button>

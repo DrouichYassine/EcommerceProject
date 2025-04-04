@@ -1,6 +1,6 @@
 <section class="products_section layout_padding">
   <div class="container">
-      <div class="heading_container heading_center">
+      <div class="heading_container heading_center " id="our-products">
         <h2>Our Products</h2>
       </div>
       <div class="row">

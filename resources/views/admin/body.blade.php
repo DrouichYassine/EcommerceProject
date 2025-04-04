@@ -552,35 +552,28 @@
                         <li>
                           <div class="form-check form-check-primary">
                             <label class="form-check-label">
-                              <input class="checkbox" type="checkbox"> Create invoice </label>
-                          </div>
-                          <i class="remove mdi mdi-close-box"></i>
-                        </li>
-                        <li>
-                          <div class="form-check form-check-primary">
-                            <label class="form-check-label">
-                              <input class="checkbox" type="checkbox"> Meeting with Alita </label>
+                              <input class="checkbox" type="checkbox"> Add more stores </label>
                           </div>
                           <i class="remove mdi mdi-close-box"></i>
                         </li>
                         <li class="completed">
                           <div class="form-check form-check-primary">
                             <label class="form-check-label">
-                              <input class="checkbox" type="checkbox" checked> Prepare for presentation </label>
+                              <input class="checkbox" type="checkbox" checked> Add more features to website </label>
                           </div>
                           <i class="remove mdi mdi-close-box"></i>
                         </li>
                         <li>
                           <div class="form-check form-check-primary">
                             <label class="form-check-label">
-                              <input class="checkbox" type="checkbox"> Plan weekend outing </label>
+                              <input class="checkbox" type="checkbox"> Add more products </label>
                           </div>
                           <i class="remove mdi mdi-close-box"></i>
                         </li>
                         <li>
                           <div class="form-check form-check-primary">
                             <label class="form-check-label">
-                              <input class="checkbox" type="checkbox"> Pick up kids from school </label>
+                              <input class="checkbox" type="checkbox"> Add more categories </label>
                           </div>
                           <i class="remove mdi mdi-close-box"></i>
                         </li>
@@ -665,8 +658,7 @@
           <!-- partial:partials/_footer.html -->
           <footer class="footer">
             <div class="d-sm-flex justify-content-center justify-content-sm-between">
-              <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © bootstrapdash.com 2020</span>
-              <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"> Free <a href="https://www.bootstrapdash.com/bootstrap-admin-template/" target="_blank">Bootstrap admin templates</a> from Bootstrapdash.com</span>
+              <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © MMYChampions.com 2025</span>
             </div>
           </footer>
           <!-- partial -->

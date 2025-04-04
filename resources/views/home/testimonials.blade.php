@@ -17,7 +17,7 @@
                 <div class="swiper-slide text-center d-flex justify-content-center">
                   <div class="review-item col-md-10">
                     <i class="icon icon-review"></i>
-                    <blockquote>“Tempus oncu enim pellen tesque este pretium in neque, elit morbi sagittis lorem habi mattis Pellen tesque pretium feugiat vel morbi suspen dise sagittis lorem habi tasse morbi.”</blockquote>
+                    <blockquote>“Your online store should not just be a place to buy; it should be an experience that inspires and delights your customers.”</blockquote>
                     <div class="rating">
                       <svg class="star star-fill">
                         <use xlink:href="#star-fill"></use>
@@ -36,7 +36,7 @@
                       </svg>
                     </div>
                     <div class="author-detail">
-                      <div class="name text-dark text-uppercase pt-2">Emma Chamberlin</div>
+                      <div class="name text-dark text-uppercase pt-2">Anonymous</div>
                     </div>
                   </div>
                 </div>

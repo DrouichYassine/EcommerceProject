@@ -265,7 +265,7 @@
         <!-- Product Detail Section -->
         <section class="product-section">
             <div class="container">
-                <a href="{{ url('/products') }}" class="return-link">
+                <a href="javascript:history.back()" class="return-link">
                     <i class="fas fa-arrow-left"></i> Back to Products
                 </a>
                 

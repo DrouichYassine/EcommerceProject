@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Ministore</title>
+    <title>MMY Champions</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -122,42 +122,7 @@
       </symbol>
     </svg>  
 
-    <div class="search-popup">
-        <div class="search-popup-container">
-
-          <form role="search" method="get" class="search-form" action="">
-            <input type="search" id="search-form" class="search-field" placeholder="Type and press enter" value="" name="s" />
-            <button type="submit" class="search-submit"><svg class="search"><use xlink:href="#search"></use></svg></button>
-          </form>
-
-          <h5 class="cat-list-title">Browse Categories</h5>
-          
-          <ul class="cat-list">
-            <li class="cat-list-item">
-              <a href="#" title="Mobile Phones">Mobile Phones</a>
-            </li>
-            <li class="cat-list-item">
-              <a href="#" title="Smart Watches">Smart Watches</a>
-            </li>
-            <li class="cat-list-item">
-              <a href="#" title="Headphones">Headphones</a>
-            </li>
-            <li class="cat-list-item">
-              <a href="#" title="Accessories">Accessories</a>
-            </li>
-            <li class="cat-list-item">
-              <a href="#" title="Monitors">Monitors</a>
-            </li>
-            <li class="cat-list-item">
-              <a href="#" title="Speakers">Speakers</a>
-            </li>
-            <li class="cat-list-item">
-              <a href="#" title="Memory Cards">Memory Cards</a>
-            </li>
-          </ul>
-
-        </div>
-    </div>
+    
     
     <!-- Include header -->
     @include('home.header')
@@ -167,7 +132,6 @@
     @include('home.services')
     @include('home.products')
     @include('home.yearlysale')
-    @include('home.latestposts')
     @include('home.testimonials')
     @include('home.subscribe')
     @include('home.instagram')
@@ -197,8 +161,7 @@
           </div>
           <div class="col-md-4 col-sm-6">
             <div class="copyright">
-              <p>© Copyright 2025 MiniStore. Design by <a href="https://templatesjungle.com/">TemplatesJungle</a> Distribution by <a href="https://themewagon.com">ThemeWagon</a>
-              </p>
+              <p>© Copyright 2025 MMY Champions</p>
             </div>
           </div>
         </div>

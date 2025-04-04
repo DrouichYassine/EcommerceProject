@@ -6,6 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Category Management</title>
     @include('admin.css')
+    <style>
+      .form-control {
+        color: white !important;
+      }
+    </style>
   </head>
   <body>
     <div class="container-scroller">

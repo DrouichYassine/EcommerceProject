@@ -7,12 +7,12 @@
                 <div class="col-md-6">
                   <div class="banner-content">
                     <h1 class="display-2 text-uppercase text-dark pb-5">Your Products Are Great.</h1>
-                    <a href="shop.html" class="btn btn-medium btn-dark text-uppercase btn-rounded-none">Shop Product</a>
+                    <a href="#our-products" class="btn btn-medium btn-dark text-uppercase btn-rounded-none" id="#our-products">Shop Product</a>
                   </div>
                 </div>
                 <div class="col-md-5">
                   <div class="image-holder">
-                    <img src="images/banner-image.png" alt="banner">
+                    <img src="images/Whey.png" alt="banner" style="width: 120%; max-width: none;">
                   </div>
                 </div>
               </div>
@@ -24,7 +24,7 @@
                 <div class="col-md-6">
                   <div class="banner-content">
                     <h1 class="display-2 text-uppercase text-dark pb-5">Technology Hack You Won't Get</h1>
-                    <a href="shop.html" class="btn btn-medium btn-dark text-uppercase btn-rounded-none">Shop Product</a>
+                    <a href="#our-products" class="btn btn-medium btn-dark text-uppercase btn-rounded-none" >Shop Product</a>
                   </div>
                 </div>
                 <div class="col-md-5">
