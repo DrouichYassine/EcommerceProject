@@ -147,7 +147,7 @@
             
             <div class="cart-actions">
                 <a href="{{ url('/') }}#featured-products" class="btn btn-primary">Continue Shopping</a>
-                <a href="#" class="btn checkout-btn">Proceed to Checkout</a>
+                <a href="{{ url('checkout') }}" class="btn checkout-btn">Proceed to Checkout</a>
             </div>
         @else
         <div class="cart-empty">

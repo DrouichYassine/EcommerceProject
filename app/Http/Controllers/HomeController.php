@@ -119,4 +119,41 @@ class HomeController extends Controller
         $orders = []; // Replace with actual orders if you have them
         return view('home.account', compact('user', 'orders'));
     }
+    
+    public function checkout()
+    {
+        $userId = Auth::id();
+        $cart = Cart::where('user_id', $userId)->get();
+        
+        return view('home.checkout', compact('cart'));
+    }
+
+    public function placeOrder(Request $request)
+    {
+        $userId = Auth::id();
+        
+        // Validate the request
+        $request->validate([
+            'firstName' => 'required|string|max:255',
+            'lastName' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'phone' => 'required|string|max:20',
+            'address' => 'required|string|max:255',
+            'city' => 'required|string|max:255',
+            'state' => 'required|string|max:255',
+            'zipCode' => 'required|string|max:20',
+            'paymentMethod' => 'required|string|max:50',
+            'agreeTerms' => 'required',
+        ]);
+        
+        // Create order here
+        // You would typically save the order details to your database
+        
+        // For demonstration purposes, we'll just show a success message
+        
+        // Clear the cart after successful order
+        Cart::where('user_id', $userId)->delete();
+        
+        return redirect()->route('home')->with('message', 'Order placed successfully!');
+    }
 }
