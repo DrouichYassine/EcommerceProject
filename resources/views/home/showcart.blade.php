@@ -146,14 +146,14 @@
             </div>
             
             <div class="cart-actions">
-                <a href="{{ url('/') }}#featured-products" class="btn btn-primary">Continue Shopping</a>
-                <a href="{{ url('checkout') }}" class="btn checkout-btn">Proceed to Checkout</a>
+                <a href="{{ url('/') }}#our-products" class="btn btn-primary">Continue Shopping</a>
+                <a href="{{ url('/checkout') }}" class="btn checkout-btn">Proceed to Checkout</a>
             </div>
         @else
         <div class="cart-empty">
             <h3>Your cart is empty</h3>
             <p>Looks like you haven't added any products to your cart yet.</p>
-            <a href="{{ url('/') }}#featured-products" class="btn btn-primary mt-3">Continue Shopping</a>
+            <a href="{{ url('/') }}#our-products" class="btn btn-primary mt-3">Continue Shopping</a>
         </div>
         @endif
     </div>
@@ -178,7 +178,7 @@
             document.querySelectorAll('.cart-empty .btn-primary, .cart-actions .btn-primary').forEach(button => {
                 button.addEventListener('click', function(e) {
                     e.preventDefault();
-                    window.location.href = "{{ url('/') }}#featured-products";
+                    window.location.href = "{{ url('/') }}#our-products";
                 });
             });
         });
