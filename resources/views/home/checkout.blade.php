@@ -241,6 +241,14 @@
                                 </div>
                             </div>
                         </div>
+                        
+                        <!-- PayPal Account Form -->
+                        <div id="paypal_account_form" class="mt-4" style="display: none;">
+                            <div class="form-group">
+                                <label for="paypal_email" class="form-label">PayPal Account Email</label>
+                                <input type="email" class="form-control" id="paypal_email" name="paypal_email" placeholder="your.email@example.com">
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
@@ -273,13 +281,9 @@
                                 <span>Shipping</span>
                                 <span>$0.00</span>
                             </div>
-                            <div class="subtotal-row">
-                                <span>Tax</span>
-                                <span>${{ number_format($total * 0.1, 2) }}</span>
-                            </div>
                             <div class="total-row">
                                 <span>Total</span>
-                                <span>${{ number_format($total + ($total * 0.1), 2) }}</span>
+                                <span>${{ number_format($total, 2) }}</span>
                             </div>
                         </div>
                         
@@ -362,6 +366,7 @@
             // Payment method options
             const paymentOptions = document.querySelectorAll('.payment-option');
             const creditCardForm = document.getElementById('credit_card_form');
+            const paypalAccountForm = document.getElementById('paypal_account_form');
             
             paymentOptions.forEach(option => {
                 option.addEventListener('click', function() {
@@ -373,8 +378,15 @@
                     const radio = this.querySelector('input[type="radio"]');
                     radio.checked = true;
                     
-                    // Show/hide credit card form
-                    creditCardForm.style.display = radio.id === 'credit_card' ? 'block' : 'none';
+                    // Show/hide payment forms based on selection
+                    creditCardForm.style.display = 'none';
+                    paypalAccountForm.style.display = 'none';
+                    
+                    if (radio.id === 'credit_card') {
+                        creditCardForm.style.display = 'block';
+                    } else if (radio.id === 'paypal') {
+                        paypalAccountForm.style.display = 'block';
+                    }
                 });
             });
             
