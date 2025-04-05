@@ -115,6 +115,15 @@
                     <tbody>
                         @php $totalAmount = 0; @endphp
                         @foreach($cart as $item)
+                            @php
+                                // Calculate the unit price (with or without discount)
+                                $unitPrice = $item->price;
+                                $finalUnitPrice = $item->discount_price > 0 ? $item->discount_price : $item->price;
+                                
+                                // Calculate the total for this item
+                                $itemTotal = $finalUnitPrice * $item->quantity;
+                                $totalAmount += $itemTotal;
+                            @endphp
                             <tr class="cart-item">
                                 <td>
                                     <div class="d-flex align-items-center">
@@ -122,27 +131,35 @@
                                         <h5>{{ $item->product_title }}</h5>
                                     </div>
                                 </td>
-                                <td>${{ $item->price / $item->quantity }}</td>
+                                <td>
+                                    @if($item->discount_price > 0)
+                                        <span style="text-decoration: line-through; color: #999;">${{ number_format($unitPrice, 2) }}</span>
+                                        ${{ number_format($item->discount_price, 2) }}
+                                    @else
+                                        ${{ number_format($unitPrice, 2) }}
+                                    @endif
+                                </td>
                                 <td>
                                     <div class="input-group" style="width: 100px;">
                                         <span class="input-group-text">{{ $item->quantity }}</span>
                                     </div>
                                 </td>
-                                <td>${{ $item->price }}</td>
+                                <td>
+                                    ${{ number_format($itemTotal, 2) }}
+                                </td>
                                 <td>
                                     <a href="{{ url('remove_cart', $item->id) }}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to remove this item?')">
                                         <i class="fas fa-trash"></i>
                                     </a>
                                 </td>
                             </tr>
-                            @php $totalAmount += $item->price; @endphp
                         @endforeach
                     </tbody>
                 </table>
             </div>
             
             <div class="cart-total">
-                <h4>Total Amount: ${{ $totalAmount }}</h4>
+                <h4>Total Amount: ${{ number_format($totalAmount, 2) }}</h4>
             </div>
             
             <div class="cart-actions">

@@ -120,31 +120,7 @@
                         <div class="payment-method">
                             <div class="payment-option active">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="payment_method" id="credit_card" value="credit_card" checked>
-                                    <label class="form-check-label" for="credit_card">
-                                        <div>
-                                            <i class="fab fa-cc-visa"></i> Credit Card
-                                        </div>
-                                        <small>Visa, Mastercard, American Express</small>
-                                    </label>
-                                </div>
-                            </div>
-                            
-                            <div class="payment-option">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="payment_method" id="paypal" value="paypal">
-                                    <label class="form-check-label" for="paypal">
-                                        <div>
-                                            <i class="fab fa-paypal"></i> PayPal
-                                        </div>
-                                        <small>Pay with your PayPal account</small>
-                                    </label>
-                                </div>
-                            </div>
-                            
-                            <div class="payment-option">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="payment_method" id="cash_on_delivery" value="cash_on_delivery">
+                                    <input class="form-check-input" type="radio" name="payment_method" id="cash_on_delivery" value="cash_on_delivery" checked>
                                     <label class="form-check-label" for="cash_on_delivery">
                                         <div>
                                             <i class="fas fa-money-bill-wave"></i> Cash on Delivery
@@ -152,46 +128,6 @@
                                         <small>Pay when you receive your order</small>
                                     </label>
                                 </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Credit Card Form -->
-                        <div id="credit_card_form" class="mt-4">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label for="card_name" class="form-label">Name on Card</label>
-                                        <input type="text" class="form-control cc-required" id="card_name" name="card_name" required>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="card_number" class="form-label">Card Number</label>
-                                <input type="text" class="form-control cc-required" id="card_number" name="card_number" placeholder="XXXX XXXX XXXX XXXX" required>
-                            </div>
-                            
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="expiry_date" class="form-label">Expiry Date</label>
-                                        <input type="text" class="form-control cc-required" id="expiry_date" name="expiry_date" placeholder="MM/YY" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="cvv" class="form-label">CVV</label>
-                                        <input type="text" class="form-control cc-required" id="cvv" name="cvv" placeholder="XXX" required>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- PayPal Account Form -->
-                        <div id="paypal_account_form" class="mt-4" style="display: none;">
-                            <div class="form-group">
-                                <label for="paypal_email" class="form-label">PayPal Account Email</label>
-                                <input type="email" class="form-control" id="paypal_email" name="paypal_email" placeholder="your.email@example.com" required>
                             </div>
                         </div>
                     </div>
@@ -300,72 +236,37 @@
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Payment method options
-            const paymentOptions = document.querySelectorAll('.payment-option');
-            const creditCardForm = document.getElementById('credit_card_form');
-            const paypalAccountForm = document.getElementById('paypal_account_form');
+            // Form submission - Update steps before submitting
+            const orderForm = document.querySelector('form');
+            const placeOrderBtn = document.getElementById('place_order_btn');
             
-            paymentOptions.forEach(option => {
-                option.addEventListener('click', function() {
-                    // Remove active class from all options
-                    paymentOptions.forEach(opt => opt.classList.remove('active'));
-                    // Add active class to clicked option
-                    this.classList.add('active');
-                    // Check the radio button
-                    const radio = this.querySelector('input[type="radio"]');
-                    radio.checked = true;
-                    
-                    // Show/hide payment forms based on selection
-                    creditCardForm.style.display = 'none';
-                    paypalAccountForm.style.display = 'none';
-                    
-                    if (radio.id === 'credit_card') {
-                        creditCardForm.style.display = 'block';
-                        document.getElementById('card_name').required = true;
-                        document.getElementById('card_number').required = true;
-                        document.getElementById('expiry_date').required = true;
-                        document.getElementById('cvv').required = true;
-                        document.getElementById('paypal_email').required = false;
-                    } else if (radio.id === 'paypal') {
-                        paypalAccountForm.style.display = 'block';
-                        document.getElementById('paypal_email').required = true;
-                        document.getElementById('card_name').required = false;
-                        document.getElementById('card_number').required = false;
-                        document.getElementById('expiry_date').required = false;
-                        document.getElementById('cvv').required = false;
-                    } else {
-                        document.getElementById('card_name').required = false;
-                        document.getElementById('card_number').required = false;
-                        document.getElementById('expiry_date').required = false;
-                        document.getElementById('cvv').required = false;
-                        document.getElementById('paypal_email').required = false;
-                    }
-                });
+            placeOrderBtn.addEventListener('click', function(event) {
+                // If form is not valid, don't do anything (browser validation will handle it)
+                if (!orderForm.checkValidity()) {
+                    return;
+                }
+                
+                // Prevent default form submission temporarily
+                event.preventDefault();
+                
+                // Update the step indicators
+                const steps = document.querySelectorAll('.checkout-steps .step');
+                steps[0].classList.remove('active');
+                steps[0].classList.add('completed');
+                steps[1].classList.remove('active');
+                steps[1].classList.add('completed');
+                steps[2].classList.remove('inactive');
+                steps[2].classList.add('active');
+                
+                // Disable the submit button to prevent multiple submissions
+                placeOrderBtn.disabled = true;
+                placeOrderBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Processing...';
+                
+                // Submit the form after a short delay to show the UI update
+                setTimeout(function() {
+                    orderForm.submit();
+                }, 800);
             });
-            
-            // Format credit card number with spaces
-            const cardNumberInput = document.getElementById('card_number');
-            if(cardNumberInput) {
-                cardNumberInput.addEventListener('input', function(e) {
-                    let value = e.target.value.replace(/\s+/g, '');
-                    if (value.length > 0) {
-                        value = value.match(new RegExp('.{1,4}', 'g')).join(' ');
-                    }
-                    e.target.value = value;
-                });
-            }
-            
-            // Format expiry date with slash
-            const expiryDateInput = document.getElementById('expiry_date');
-            if(expiryDateInput) {
-                expiryDateInput.addEventListener('input', function(e) {
-                    let value = e.target.value.replace(/\D/g, '');
-                    if (value.length > 2) {
-                        value = value.slice(0, 2) + '/' + value.slice(2, 4);
-                    }
-                    e.target.value = value;
-                });
-            }
             
             // Add validation feedback animations
             const formInputs = document.querySelectorAll('.form-control');

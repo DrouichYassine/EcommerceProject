@@ -23,6 +23,8 @@ class CreateNewUser implements CreatesNewUsers
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => $this->passwordRules(),
+            'address' => ['required', 'string', 'max:255'], // Add validation for address
+            'phone' => ['required', 'string', 'max:20'],    // Add validation for phone
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : '',
         ])->validate();
 
@@ -30,10 +32,13 @@ class CreateNewUser implements CreatesNewUsers
             'name' => $input['name'],
             'email' => $input['email'],
             'password' => Hash::make($input['password']),
+            'address' => $input['address'], // Save address
+            'phone' => $input['phone'],     // Save phone
         ]);
     }
+
     protected function redirectTo() 
-{
-    return '/'; 
-}
+    {
+        return '/'; 
+    }
 }
