@@ -106,8 +106,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function() {
 Route::get('/products', [HomeController::class, 'all_products'])->name('products');
 Route::get('/product_details/{id}', [HomeController::class, 'product_details'])->name('product.details');
 
-// Cart actions (consolidated to one POST route)
+// Cart actions (support both GET and POST methods)
 Route::post('/add_cart/{id}', [HomeController::class, 'add_cart'])->name('cart.add');
+Route::get('/add_cart/{id}', [HomeController::class, 'add_cart'])->name('cart.add.get');
 
 // Category-based product listing
 Route::get('/category/{id}', [HomeController::class, 'categoryProducts'])->name('category.products');

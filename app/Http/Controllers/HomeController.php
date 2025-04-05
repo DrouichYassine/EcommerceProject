@@ -21,25 +21,25 @@ class HomeController extends Controller
         $usertype = Auth::user()->usertype;
         
         if($usertype == '1')
-    {
-        // Get statistics for admin dashboard
-        $total_products = Product::count();
-        $total_orders = 0; // Replace with actual order count when you have an Order model
-        $total_customers = User::where('usertype', '0')->count();
-        $total_revenue = 0; // Replace with actual revenue calculation when you have order data
-        
-        return view('admin.home', compact(
-            'total_products',
-            'total_orders',
-            'total_customers',
-            'total_revenue'
-        ));
-    }
-    else
-    {
-        $products = Product::paginate(9);
-        return view('home.userpage', compact('products'));
-    }
+        {
+            // Get statistics for admin dashboard
+            $total_products = Product::count();
+            $total_orders = 0; // Replace with actual order count when you have an Order model
+            $total_customers = User::where('usertype', '0')->count();
+            $total_revenue = 0; // Replace with actual revenue calculation when you have order data
+            
+            return view('admin.home', compact(
+                'total_products',
+                'total_orders',
+                'total_customers',
+                'total_revenue'
+            ));
+        }
+        else
+        {
+            $products = Product::paginate(9);
+            return view('home.userpage', compact('products'));
+        }
     }
     
     public function all_products()
@@ -59,57 +59,29 @@ class HomeController extends Controller
         if(Auth::id())
         {
             $user = Auth::user();
-            $product = Product::find($id);
+            $product = Product::findOrFail($id);
             
-            // Check if product exists
-            if(!$product) {
-                return redirect()->back()->with('error', 'Product not found');
-            }
+            $cart = new Cart;
             
-            // Get quantity from request or default to 1
-            $quantity = $request->quantity ?? 1;
+            $cart->name = $user->name;
+            $cart->email = $user->email;
+            $cart->phone = $user->phone ?? 0; // Default to 0 if phone is null or empty
+            $cart->address = $user->address ?? '';
+            $cart->user_id = $user->id;
             
-            // Check if item is already in cart
-            $cart = Cart::where('user_id', $user->id)
-                        ->where('product_id', $id)
-                        ->first();
+            $cart->product_title = $product->title;
+            $cart->product_id = $product->id;
+            $cart->price = $product->price;
+            $cart->image = $product->image;
+            $cart->quantity = $request->quantity ?? 1;
             
-            if($cart) {
-                // Update quantity if already in cart
-                $cart->quantity += $quantity;
-                $cart->save();
-            } else {
-                // Create new cart item
-                $cart = new Cart;
-                $cart->name = $user->name;
-                $cart->email = $user->email;
-                $cart->phone = $user->phone ?? '';
-                $cart->address = $user->address ?? '';
-                $cart->user_id = $user->id;
-                
-                $cart->product_title = $product->title;
-                $cart->product_id = $product->id;
-                
-                if($product->discount_price) {
-                    $cart->price = $product->discount_price * $quantity;
-                } else {
-                    $cart->price = $product->price * $quantity;
-                }
-                
-                $cart->image = $product->image;
-                $cart->quantity = $quantity;
-                
-                $cart->save();
-            }
+            $cart->save();
             
-            return redirect()->back()->with('message', 'Product added to cart successfully!');
+            return redirect()->back()->with('message', 'Product Added to Cart Successfully');
         }
         else
         {
-            // Store intended URL in session
-            $request->session()->put('url.intended', url()->current());
-            
-            return redirect()->route('login');
+            return redirect('login');
         }
     }
     
