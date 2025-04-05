@@ -24,23 +24,18 @@ class HomeController extends Controller
         
         if($usertype == '1')
         {
-            // Get statistics for admin dashboard
-            $total_products = Product::count();
-            $total_orders = 0; // Replace with actual order count when you have an Order model
-            $total_customers = User::where('usertype', '0')->count();
-            $total_revenue = 0; // Replace with actual revenue calculation when you have order data
+            $total_product = Product::all()->count();
+            $total_orders = Order::all()->count();
+            $total_users = User::where('usertype', '0')->count();
+            $orders = Order::orderBy('created_at', 'desc')->paginate(10);
+            $total_revenue = Order::sum('total_amount');
             
-            return view('admin.home', compact(
-                'total_products',
-                'total_orders',
-                'total_customers',
-                'total_revenue'
-            ));
+            return view('admin.home', compact('total_product', 'total_orders', 'total_users', 'orders', 'total_revenue'));
         }
         else
         {
-            $products = Product::paginate(9);
-            return view('home.userpage', compact('products'));
+            $product = Product::paginate(9);
+            return view('home.userpage', compact('product'));
         }
     }
     

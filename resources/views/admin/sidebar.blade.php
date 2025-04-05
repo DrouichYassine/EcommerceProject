@@ -23,6 +23,15 @@
     </li>
     
     <li class="nav-item menu-items">
+      <a class="nav-link" href="{{ url('/redirect') }}">
+        <span class="menu-icon">
+          <i class="mdi mdi-speedometer"></i>
+        </span>
+        <span class="menu-title">Dashboard</span>
+      </a>
+    </li>
+    
+    <li class="nav-item menu-items">
       <a class="nav-link" href="{{ url('view_category') }}">
         <span class="menu-icon">
           <i class="mdi mdi-playlist-play"></i>
@@ -36,14 +45,6 @@
           <i class="mdi mdi-laptop"></i>
         </span>
         <span class="menu-title">Products</span>
-      </a>
-    </li>
-    <li class="nav-item menu-items">
-      <a class="nav-link" href="{{ url('view_orders') }}">
-        <span class="menu-icon">
-          <i class="mdi mdi-cart"></i>
-        </span>
-        <span class="menu-title">Orders</span>
       </a>
     </li>
   </ul>
