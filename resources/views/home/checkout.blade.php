@@ -690,61 +690,6 @@
                         </div>
                     </div>
                     
-                    <!-- Billing Information -->
-                    <div class="checkout-form">
-                        <h3><i class="fas fa-file-invoice-dollar me-2"></i>Billing Information</h3>
-                        
-                        <div class="same-address-check form-check">
-                            <input class="form-check-input" type="checkbox" id="same_address" name="same_address" checked>
-                            <label class="form-check-label" for="same_address">
-                                Same as shipping address
-                            </label>
-                        </div>
-                        
-                        <div id="billing_address_form" style="display: none;">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="billing_first_name" class="form-label">First Name</label>
-                                        <input type="text" class="form-control" id="billing_first_name" name="billing_first_name">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="billing_last_name" class="form-label">Last Name</label>
-                                        <input type="text" class="form-control" id="billing_last_name" name="billing_last_name">
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="billing_address" class="form-label">Address</label>
-                                <input type="text" class="form-control" id="billing_address" name="billing_address">
-                            </div>
-                            
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="billing_city" class="form-label">City</label>
-                                        <input type="text" class="form-control" id="billing_city" name="billing_city">
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="billing_state" class="form-label">State</label>
-                                        <input type="text" class="form-control" id="billing_state" name="billing_state">
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="billing_zip" class="form-label">Zip Code</label>
-                                        <input type="text" class="form-control" id="billing_zip" name="billing_zip">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
                     <!-- Payment Method -->
                     <div class="checkout-form">
                         <h3><i class="fas fa-credit-card me-2"></i>Payment Method</h3>
@@ -793,27 +738,27 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="card_name" class="form-label">Name on Card</label>
-                                        <input type="text" class="form-control" id="card_name" name="card_name">
+                                        <input type="text" class="form-control cc-required" id="card_name" name="card_name" required>
                                     </div>
                                 </div>
                             </div>
                             
                             <div class="form-group">
                                 <label for="card_number" class="form-label">Card Number</label>
-                                <input type="text" class="form-control" id="card_number" name="card_number" placeholder="XXXX XXXX XXXX XXXX">
+                                <input type="text" class="form-control cc-required" id="card_number" name="card_number" placeholder="XXXX XXXX XXXX XXXX" required>
                             </div>
                             
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="expiry_date" class="form-label">Expiry Date</label>
-                                        <input type="text" class="form-control" id="expiry_date" name="expiry_date" placeholder="MM/YY">
+                                        <input type="text" class="form-control cc-required" id="expiry_date" name="expiry_date" placeholder="MM/YY" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="cvv" class="form-label">CVV</label>
-                                        <input type="text" class="form-control" id="cvv" name="cvv" placeholder="XXX">
+                                        <input type="text" class="form-control cc-required" id="cvv" name="cvv" placeholder="XXX" required>
                                     </div>
                                 </div>
                             </div>
@@ -823,7 +768,7 @@
                         <div id="paypal_account_form" class="mt-4" style="display: none;">
                             <div class="form-group">
                                 <label for="paypal_email" class="form-label">PayPal Account Email</label>
-                                <input type="email" class="form-control" id="paypal_email" name="paypal_email" placeholder="your.email@example.com">
+                                <input type="email" class="form-control" id="paypal_email" name="paypal_email" placeholder="your.email@example.com" required>
                             </div>
                         </div>
                     </div>
@@ -873,7 +818,7 @@
                             </div>
                         </div>
                         
-                        <button type="submit" class="place-order-btn">
+                        <button type="submit" class="place-order-btn" id="place_order_btn">
                             <i class="fas fa-lock me-2"></i> Complete Order
                         </button>
                         
@@ -932,14 +877,6 @@
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Show/hide billing address form
-            const sameAddressCheckbox = document.getElementById('same_address');
-            const billingAddressForm = document.getElementById('billing_address_form');
-            
-            sameAddressCheckbox.addEventListener('change', function() {
-                billingAddressForm.style.display = this.checked ? 'none' : 'block';
-            });
-            
             // Payment method options
             const paymentOptions = document.querySelectorAll('.payment-option');
             const creditCardForm = document.getElementById('credit_card_form');
@@ -961,8 +898,24 @@
                     
                     if (radio.id === 'credit_card') {
                         creditCardForm.style.display = 'block';
+                        document.getElementById('card_name').required = true;
+                        document.getElementById('card_number').required = true;
+                        document.getElementById('expiry_date').required = true;
+                        document.getElementById('cvv').required = true;
+                        document.getElementById('paypal_email').required = false;
                     } else if (radio.id === 'paypal') {
                         paypalAccountForm.style.display = 'block';
+                        document.getElementById('paypal_email').required = true;
+                        document.getElementById('card_name').required = false;
+                        document.getElementById('card_number').required = false;
+                        document.getElementById('expiry_date').required = false;
+                        document.getElementById('cvv').required = false;
+                    } else {
+                        document.getElementById('card_name').required = false;
+                        document.getElementById('card_number').required = false;
+                        document.getElementById('expiry_date').required = false;
+                        document.getElementById('cvv').required = false;
+                        document.getElementById('paypal_email').required = false;
                     }
                 });
             });
