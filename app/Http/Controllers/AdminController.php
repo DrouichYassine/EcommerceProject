@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\User;
+use App\Models\Order;
 use Illuminate\Support\Facades\File;
 
 class AdminController extends Controller
@@ -156,7 +157,19 @@ class AdminController extends Controller
 
     public function dashboard()
     {
-        return view('admin.dashboard');
+        $total_products = Product::count();
+        $total_orders = Order::count();
+        $total_users = User::where('usertype', 'user')->count(); // Assuming you have a 'usertype' column
+        $total_revenue = Order::where('payment_status', 'paid')->sum('total_amount');
+        $orders = Order::latest()->paginate(10); // For the recent orders table
+        
+        return view('admin.dashboard', compact(
+            'total_products',
+            'total_orders',
+            'total_users',
+            'total_revenue',
+            'orders'
+        ));
     }
 
     public function show_category()

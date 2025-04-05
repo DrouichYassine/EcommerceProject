@@ -1,318 +1,318 @@
-/* Font Faces */
-@font-face {
-    font-family: 'Poppins-Regular';
-    src: url('../Fonts/poppins/Poppins-Regular.ttf'); 
-  }
+    /* Font Faces */
+    @font-face {
+        font-family: 'Poppins-Regular';
+        src: url('../Fonts/poppins/Poppins-Regular.ttf'); 
+      }
   
-  @font-face {
-    font-family: 'Poppins-Medium';
-    src: url('../Fonts/poppins/Poppins-Medium.ttf');  
-  }
+      @font-face {
+        font-family: 'Poppins-Medium';
+        src: url('../Fonts/poppins/Poppins-Medium.ttf');  
+      }
   
-  @font-face {
-    font-family: 'Poppins-Bold';
-    src: url('../Fonts/poppins/Poppins-Bold.ttf'); 
-  }
+      @font-face {
+        font-family: 'Poppins-Bold';
+        src: url('../Fonts/poppins/Poppins-Bold.ttf'); 
+      }
   
-  @font-face {
-    font-family: 'Poppins-SemiBold';
-    src: url('../Fonts/poppins/Poppins-SemiBold.ttf'); 
-  }
+      @font-face {
+        font-family: 'Poppins-SemiBold';
+        src: url('../Fonts/poppins/Poppins-SemiBold.ttf'); 
+      }
   
-  /* Base Styles */
-  * {
-      margin: 0;
-      padding: 0; 
-      box-sizing: border-box;
-  }
+      /* Base Styles */
+      * {
+          margin: 0;
+          padding: 0; 
+          box-sizing: border-box;
+      }
   
-  body, html {
-      height: 100%;
-      font-family: 'Poppins', sans-serif;
-      background: #f2f2f2;
-  }
+      body, html {
+          height: 100%;
+          font-family: 'Poppins', sans-serif;
+          background: #f2f2f2;
+      }
   
-  a {
-      font-size: 14px;
-      line-height: 1.7;
-      color: #666666;
-      margin: 0;
-      transition: all 0.4s;
-      text-decoration: none;
-  }
+      a {
+          font-size: 14px;
+          line-height: 1.7;
+          color: #666666;
+          margin: 0;
+          transition: all 0.4s;
+          text-decoration: none;
+      }
   
-  a:focus {
-      outline: none;
-  }
+      a:focus {
+          outline: none;
+      }
   
-  h1, h2, h3, h4, h5, h6 {
-      margin: 0;
-  }
+      h1, h2, h3, h4, h5, h6 {
+          margin: 0;
+      }
   
-  p {
-      font-size: 14px;
-      line-height: 1.7;
-      color: #666666;
-      margin: 0;
-  }
+      p {
+          font-size: 14px;
+          line-height: 1.7;
+          color: #666666;
+          margin: 0;
+      }
   
-  ul, li {
-      margin: 0;
-      list-style-type: none;
-  }
+      ul, li {
+          margin: 0;
+          list-style-type: none;
+      }
   
-  input, textarea {
-      outline: none;
-      border: none;
-  }
+      input, textarea {
+          outline: none;
+          border: none;
+      }
   
-  textarea:focus, input:focus {
-      border-color: transparent !important;
-  }
+      textarea:focus, input:focus {
+          border-color: transparent !important;
+      }
   
-  button {
-      outline: none !important;
-      border: none;
-      background: transparent;
-      cursor: pointer;
-  }
+      button {
+          outline: none !important;
+          border: none;
+          background: transparent;
+          cursor: pointer;
+      }
   
-  /* Login Container */
-  .login-container {
-      margin-top: 140px;
-  }
+      /* Login Container */
+      .login-container {
+          margin-top: 140px;
+      }
   
-  .login-card {
-      width: 390px;
-      background: #fff;
-      border-radius: 10px;
-      overflow: hidden;
-      padding: 77px 55px 33px;
-      box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1);
-      margin: 0 auto;
-  }
+      .login-card {
+          width: 390px;
+          background: #fff;
+          border-radius: 10px;
+          overflow: hidden;
+          padding: 77px 55px 33px;
+          box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1);
+          margin: 0 auto;
+      }
   
-  /* Form Styles */
-  .login-form {
-      width: 100%;
-  }
+      /* Form Styles */
+      .login-form {
+          width: 100%;
+      }
   
-  .login-title {
-      display: block;
-      font-family: 'Poppins', sans-serif;
-      font-weight: 700;
-      font-size: 30px;
-      color: #333;
-      line-height: 1.2;
-      text-align: center;
-      padding-bottom: 26px;
-  }
+      .login-title {
+          display: block;
+          font-family: 'Poppins', sans-serif;
+          font-weight: 700;
+          font-size: 30px;
+          color: #333;
+          line-height: 1.2;
+          text-align: center;
+          padding-bottom: 26px;
+      }
   
-  .login-logo {
-      text-align: center;
-      padding-bottom: 48px;
-  }
+      .login-logo {
+          text-align: center;
+          padding-bottom: 48px;
+      }
   
-  .login-logo img {
-      width: 250px;
-      height: 100px;
-  }
+      .login-logo img {
+          width: 90px;
+          height: 90px;
+      }
   
-  /* Form Groups */
-  .form-group {
-      width: 100%;
-      position: relative;
-      border-bottom: 2px solid black;
-      margin-bottom: 37px;
-  }
+      /* Form Groups */
+      .form-group {
+          width: 100%;
+          position: relative;
+          border-bottom: 2px solid #adadad;
+          margin-bottom: 37px;
+      }
   
-  .form-input {
-      font-size: 15px;
-      color: #555;
-      line-height: 1.2;
-      display: block;
-      width: 100%;
-      height: 45px;
-      background: transparent;
-      padding: 0 5px;
-  }
+      .form-input {
+          font-size: 15px;
+          color: #555;
+          line-height: 1.2;
+          display: block;
+          width: 100%;
+          height: 45px;
+          background: transparent;
+          padding: 0 5px;
+      }
   
-  .input-label {
-      font-size: 15px;
-      color: #999;
-      line-height: 1.2;
-      position: absolute;
-      display: block;
-      width: 100%;
-      top: 16px;
-      left: 5px;
-      pointer-events: none;
-      transition: all 0.4s;
-  }
+      .input-label {
+          font-size: 15px;
+          color: #999;
+          line-height: 1.2;
+          position: absolute;
+          display: block;
+          width: 100%;
+          top: 16px;
+          left: 5px;
+          pointer-events: none;
+          transition: all 0.4s;
+      }
   
-  .form-group::after {
-      content: "";
-      display: block;
-      position: absolute;
-      bottom: -2px;
-      left: 0;
-      width: 0;
-      height: 2px;
-      background: black;
-      transition: all 0.4s;
-  }
+      .form-group::after {
+          content: "";
+          display: block;
+          position: absolute;
+          bottom: -2px;
+          left: 0;
+          width: 0;
+          height: 2px;
+          background: black;
+          transition: all 0.4s;
+      }
   
-  .form-input:focus + .input-label,
-  .form-input:not(:placeholder-shown) + .input-label {
-      top: -15px;
-      font-size: 13px;
-  }
+      .form-input:focus + .input-label,
+      .form-input:not(:placeholder-shown) + .input-label {
+          top: -15px;
+          font-size: 13px;
+      }
   
   
   
-  /* Password Toggle */
-  .toggle-password {
-      font-size: 15px;
-      color: #999;
-      display: flex;
-      align-items: center;
-      position: absolute;
-      height: 100%;
-      top: 0;
-      right: 0;
-      padding-right: 5px;
-      cursor: pointer;
-      transition: all 0.4s;
-  }
+      /* Password Toggle */
+      .toggle-password {
+          font-size: 15px;
+          color: #999;
+          display: flex;
+          align-items: center;
+          position: absolute;
+          height: 100%;
+          top: 0;
+          right: 0;
+          padding-right: 5px;
+          cursor: pointer;
+          transition: all 0.4s;
+      }
   
-  .toggle-password:hover {
-      color: #6a7dfe;
-  }
+      .toggle-password:hover {
+          color: #6a7dfe;
+      }
   
-  /* Button Styles */
-  .form-actions {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      padding-top: 13px;
-  }
+      /* Button Styles */
+      .form-actions {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          padding-top: 13px;
+      }
   
-  .login-button {
-      position: relative;
-      z-index: 1;
-      border-radius: 25px;
-      overflow: hidden;
-      width: 100%;
-      height: 50px;
-  }
+      .login-button {
+          position: relative;
+          z-index: 1;
+          border-radius: 25px;
+          overflow: hidden;
+          width: 100%;
+          height: 50px;
+      }
   
-  .button-bg {
-      position: absolute;
-      z-index: -1;
-      width: 300%;
-      height: 100%;
-      background: black;
-      top: 0;
-      left: -100%;
-      transition: all 0.4s;
-  }
+      .button-bg {
+          position: absolute;
+          z-index: -1;
+          width: 300%;
+          height: 100%;
+          background: black;
+          top: 0;
+          left: -100%;
+          transition: all 0.4s;
+      }
   
-  .login-button:hover .button-bg {
-      left: 0;
-  }
+      .login-button:hover .button-bg {
+          left: 0;
+      }
   
-  .button-text {
-      font-family: 'Poppins', sans-serif;
-      font-weight: 500;
-      font-size: 15px;
-      color: #fff;
-      line-height: 1.2;
-      text-transform: uppercase;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 100%;
-      height: 100%;
-  }
+      .button-text {
+          font-family: 'Poppins', sans-serif;
+          font-weight: 500;
+          font-size: 15px;
+          color: #fff;
+          line-height: 1.2;
+          text-transform: uppercase;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 100%;
+          height: 100%;
+      }
   
-  /* Footer Links */
-  .login-footer {
-      text-align: center;
-      padding-top: 50px;
-  }
+      /* Footer Links */
+      .login-footer {
+          text-align: center;
+          padding-top: 50px;
+      }
   
-  .footer-text {
-      font-size: 13px;
-      color: #666;
-      line-height: 1.5;
-  }
+      .footer-text {
+          font-size: 13px;
+          color: #666;
+          line-height: 1.5;
+      }
   
-  .footer-link {
-      font-size: 13px;
-      color: #333;
-      line-height: 1.5;
-      margin-left: 5px;
-  }
+      .footer-link {
+          font-size: 13px;
+          color: #333;
+          line-height: 1.5;
+          margin-left: 5px;
+      }
   
-  .footer-link:hover {
-      color: #6a7dfe;
-  }
+      .footer-link:hover {
+          color: #6a7dfe;
+      }
   
-  /* Validation */
-  .validate-input {
-      position: relative;
-  }
+      /* Validation */
+      .validate-input {
+          position: relative;
+      }
   
-  .alert-validate::before {
-      content: attr(data-validate);
-      position: absolute;
-      max-width: 70%;
-      background-color: #fff;
-      border: 1px solid #c80000;
-      border-radius: 2px;
-      padding: 4px 25px 4px 10px;
-      top: 50%;
-      transform: translateY(-50%);
-      right: 0px;
-      pointer-events: none;
-      color: #c80000;
-      font-size: 13px;
-      line-height: 1.4;
-      text-align: left;
-      visibility: hidden;
-      opacity: 0;
-      transition: opacity 0.4s;
-  }
-  
-  .alert-validate::after {
-      content: "\f06a";
-      font-family: FontAwesome;
-      font-size: 16px;
-      color: #c80000;
-      display: block;
-      position: absolute;
-      background-color: #fff;
-      top: 50%;
-      transform: translateY(-50%);
-      right: 5px;
-  }
-  
-  .alert-validate:hover:before {
-      visibility: visible;
-      opacity: 1;
-  }
-  
-  /* Responsive */
-  @media (max-width: 992px) {
       .alert-validate::before {
+          content: attr(data-validate);
+          position: absolute;
+          max-width: 70%;
+          background-color: #fff;
+          border: 1px solid #c80000;
+          border-radius: 2px;
+          padding: 4px 25px 4px 10px;
+          top: 50%;
+          transform: translateY(-50%);
+          right: 0px;
+          pointer-events: none;
+          color: #c80000;
+          font-size: 13px;
+          line-height: 1.4;
+          text-align: left;
+          visibility: hidden;
+          opacity: 0;
+          transition: opacity 0.4s;
+      }
+  
+      .alert-validate::after {
+          content: "\f06a";
+          font-family: FontAwesome;
+          font-size: 16px;
+          color: #c80000;
+          display: block;
+          position: absolute;
+          background-color: #fff;
+          top: 50%;
+          transform: translateY(-50%);
+          right: 5px;
+      }
+  
+      .alert-validate:hover:before {
           visibility: visible;
           opacity: 1;
       }
-  }
   
-  @media (max-width: 576px) {
-      .login-card {
-          padding: 77px 15px 33px;
-          width: 90%;
+      /* Responsive */
+      @media (max-width: 992px) {
+          .alert-validate::before {
+              visibility: visible;
+              opacity: 1;
+          }
       }
-  }
+  
+      @media (max-width: 576px) {
+          .login-card {
+              padding: 77px 15px 33px;
+              width: 90%;
+          }
+      }

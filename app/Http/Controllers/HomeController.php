@@ -125,7 +125,7 @@ class HomeController extends Controller
         return view('home.checkout', compact('cart'));
     }
 
-    public function place_order(Request $request)
+    public function placeOrder(Request $request)
     {
         // Validate the request data
         $request->validate([

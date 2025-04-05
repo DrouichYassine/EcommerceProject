@@ -56,7 +56,6 @@ Route::middleware(['auth'])->group(function() {
     // Checkout routes
     Route::get('/checkout', [HomeController::class, 'checkout'])->name('checkout');
     Route::post('/place_order', [HomeController::class, 'placeOrder'])->name('order.place');
-    Route::post('/place_order', [HomeController::class, 'place_order']);
 });
 
 // Admin routes with role checking
