@@ -122,6 +122,9 @@ Route::get('/category/{id}', [HomeController::class, 'categoryProducts'])->name(
 Route::get('/search', [HomeController::class, 'search'])->name('search');
 Route::get('/product/{id}', [HomeController::class, 'product_details'])->name('product.details');
 
+// Search product functionality
+Route::get('/search_product', [HomeController::class, 'search_product']);
+
 // Category Routes
 Route::get('/view_category', [AdminController::class, 'view_category']);
 Route::post('/add_category', [AdminController::class, 'add_category']);

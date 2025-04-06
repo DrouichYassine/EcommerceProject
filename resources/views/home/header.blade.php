@@ -22,11 +22,11 @@
             <a class="nav-link me-3" href="#yearly-sale">Sale</a>
           </li>
           
-          <!-- Search bar -->
-          <li class="nav-item flex-grow-1 mx-3">
-            <form action="{{ url('/search') }}" method="GET" class="d-flex">
-              <input class="form-control me-2" type="search" name="query" placeholder="Search products..." aria-label="Search" required>
-              <button class="btn btn-outline-danger" type="submit">
+          <!-- Search Bar -->
+          <li class="nav-item flex-grow-1 me-3">
+            <form action="{{ url('/search_product') }}" method="GET" class="d-flex">
+              <input class="form-control me-2 search-input" type="search" name="search" placeholder="Search products..." aria-label="Search" required>
+              <button class="btn btn-outline-primary search-btn" type="submit">
                 <i class="fas fa-search"></i>
               </button>
             </form>
@@ -104,10 +104,14 @@
     transform: none;
   }
   
-  /* Responsive search bar */
-  .navbar-nav .nav-item.flex-grow-1 {
+  /* Search bar styles */
+  .search-input {
+    max-width: 100%;
+  }
+  
+  .nav-item.flex-grow-1 {
     width: 100%;
-    margin: 10px 0;
+    margin-bottom: 10px;
   }
 }
 

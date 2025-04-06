@@ -139,10 +139,29 @@ class HomeController extends Controller
         
         // If only one product is found, redirect to its detail page
         if ($products->count() == 1) {
-            return redirect()->route('product_details', $products->first()->id);
+            return redirect()->route('product.details', $products->first()->id);
         }
         
         // Otherwise show search results
         return view('home.search_results', compact('products', 'query'));
+    }
+
+    public function search_product(Request $request)
+    {
+        $search = $request->search;
+        
+        // Search for products that match the search query
+        $product = Product::where('title', 'LIKE', "%$search%")
+                          ->orWhere('description', 'LIKE', "%$search%")
+                          ->orWhere('category', 'LIKE', "%$search%")
+                          ->first();
+        
+        // If product is found, redirect to product details
+        if ($product) {
+            return redirect('product_details/' . $product->id);
+        }
+        
+        // If no product is found, show the not found page
+        return view('home.product_not_found', compact('search'));
     }
 }
