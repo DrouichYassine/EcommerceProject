@@ -127,5 +127,22 @@ class HomeController extends Controller
         return view('home.checkout', compact('cart'));
     }
 
-    
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+        
+        // Search for products that match the query
+        $products = Product::where('title', 'LIKE', "%$query%")
+                          ->orWhere('description', 'LIKE', "%$query%")
+                          ->orWhere('category', 'LIKE', "%$query%")
+                          ->get();
+        
+        // If only one product is found, redirect to its detail page
+        if ($products->count() == 1) {
+            return redirect()->route('product_details', $products->first()->id);
+        }
+        
+        // Otherwise show search results
+        return view('home.search_results', compact('products', 'query'));
+    }
 }

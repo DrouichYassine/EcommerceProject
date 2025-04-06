@@ -21,6 +21,17 @@
           <li class="nav-item">
             <a class="nav-link me-3" href="#yearly-sale">Sale</a>
           </li>
+          
+          <!-- Search bar -->
+          <li class="nav-item flex-grow-1 mx-3">
+            <form action="{{ url('/search') }}" method="GET" class="d-flex">
+              <input class="form-control me-2" type="search" name="query" placeholder="Search products..." aria-label="Search" required>
+              <button class="btn btn-outline-danger" type="submit">
+                <i class="fas fa-search"></i>
+              </button>
+            </form>
+          </li>
+          
           <!-- Cart first (switched position) -->
           <li class="nav-item">
             <a href="{{ url('/show_cart') }}" class="nav-link me-2">
@@ -91,6 +102,12 @@
 @media (max-width: 992px) {
   .dropdown-menu {
     transform: none;
+  }
+  
+  /* Responsive search bar */
+  .navbar-nav .nav-item.flex-grow-1 {
+    width: 100%;
+    margin: 10px 0;
   }
 }
 
