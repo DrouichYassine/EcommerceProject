@@ -109,7 +109,7 @@
                         <thead>
                           <tr>
                             <th>Customer</th>
-                            <th>Product</th>
+                            
                             <th>Amount</th>
                             <th>Payment Status</th>
                             <th>Delivery Status</th>
@@ -131,8 +131,8 @@
                                 {{ $order->name ?? 'N/A' }}
                               @endif
                             </td>
-                            <td>{{ $order->product_title }}</td>
-                            <td><span class="font-weight-bold">${{ $order->price }}</span></td>
+                            
+                            <td><span class="font-weight-bold">${{ $order->total_amount }}</span></td>
                             <td>
                               <span class="badge badge-{{ $order->payment_status == 'paid' ? 'success' : ($order->payment_status == 'pending' ? 'warning' : 'danger') }}">
                                 {{ ucfirst($order->payment_status) }}

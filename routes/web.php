@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\OrderController;
 use Laravel\Fortify\Features;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 use Laravel\Fortify\Http\Controllers\RegisteredUserController;
@@ -19,7 +21,7 @@ use Laravel\Fortify\Http\Controllers\RegisteredUserController;
 */
 
 // Home page route
-Route::get('/',[HomeController::class, 'index']);
+Route::get('/',[HomeController::class, 'index'])->name('home');
 
 // Authentication routes (manually adding these if Fortify/Jetstream isn't working correctly)
 Route::get('/login', function () {
@@ -54,9 +56,12 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/order/{id}', [HomeController::class, 'orderDetails'])->name('order.details');
     
     // Checkout routes
-    Route::get('/checkout', [HomeController::class, 'checkout'])->name('checkout');
-    Route::post('/place_order', [HomeController::class, 'placeOrder'])->name('order.place');
+    Route::get('/checkout', [CheckoutController::class, 'showCheckout'])->name('checkout');
+    Route::post('/place-order', [CheckoutController::class, 'placeOrder'])->name('place.order');
+    Route::get('/order-success/{order}', [CheckoutController::class, 'orderSuccess'])->name('order.success');
+    
 });
+
 
 // Admin routes with role checking
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function() {

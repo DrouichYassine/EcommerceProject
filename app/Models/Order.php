@@ -11,7 +11,7 @@ class Order extends Model
 
     protected $fillable = [
         'user_id',
-        'product_id',
+        'order_number',
         'first_name',
         'last_name',
         'email',
@@ -19,26 +19,20 @@ class Order extends Model
         'address',
         'city',
         'state',
-        'zip',
+        'zip_code',
         'payment_method',
         'payment_status',
-        'order_status',
-        'total_amount',
-        'notes'
+        'status',
+        'total_amount'
     ];
-
-    public function items()
-    {
-        return $this->hasMany(OrderItem::class);
-    }
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
-    
-    public function product()
+
+    public function items()
     {
-        return $this->belongsTo(Product::class);
+        return $this->hasMany(OrderItem::class);
     }
 }

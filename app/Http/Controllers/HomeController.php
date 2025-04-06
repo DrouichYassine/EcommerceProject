@@ -8,6 +8,8 @@ use App\Models\User;
 use App\Models\Product;
 use App\Models\Cart;
 use App\Models\Order;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use App\Models\OrderItem;
 
 class HomeController extends Controller
@@ -125,68 +127,5 @@ class HomeController extends Controller
         return view('home.checkout', compact('cart'));
     }
 
-    public function placeOrder(Request $request)
-    {
-        // Validate the request data
-        $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'phone' => 'required|string|max:20',
-            'address' => 'required|string|max:255',
-            'city' => 'required|string|max:255',
-            'state' => 'required|string|max:255',
-            'zip' => 'required|string|max:20',
-            'payment_method' => 'required|string',
-            'terms' => 'required'
-        ]);
-
-        // Get cart items
-        $user_id = Auth::id();
-        $cart_items = Cart::where('user_id', $user_id)->get();
-        
-        if ($cart_items->count() == 0) {
-            return redirect()->back()->with('error', 'Your cart is empty!');
-        }
-
-        // Calculate total
-        $total_amount = 0;
-        foreach ($cart_items as $item) {
-            $total_amount += $item->price;
-        }
-
-        // Create order
-        $order = new Order();
-        $order->user_id = $user_id;
-        $order->first_name = $request->first_name;
-        $order->last_name = $request->last_name;
-        $order->email = $request->email;
-        $order->phone = $request->phone;
-        $order->address = $request->address;
-        $order->city = $request->city;
-        $order->state = $request->state;
-        $order->zip = $request->zip;
-        $order->payment_method = 'cash_on_delivery';
-        $order->payment_status = 'pending';
-        $order->order_status = 'processing';
-        $order->total_amount = $total_amount;
-        $order->save();
-
-        // Create order items
-        foreach ($cart_items as $item) {
-            $order_item = new OrderItem();
-            $order_item->order_id = $order->id;
-            $order_item->product_id = $item->product_id;
-            $order_item->product_title = $item->product_title;
-            $order_item->price = $item->price;
-            $order_item->quantity = $item->quantity;
-            $order_item->save();
-        }
-
-        // Clear the cart
-        Cart::where('user_id', $user_id)->delete();
-
-        // Redirect to order complete page with order details
-        return view('home.order_complete', compact('order'));
-    }
+    
 }
