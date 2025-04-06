@@ -17,7 +17,7 @@
                     Welcome
                 </h1>
                 <div class="login-logo">
-                    <img src="{{ asset('images/logo.png') }}" alt="logo">
+                    <img src="{{ asset('images/MMY Champions.png') }}" alt="logo">
                 </div>
                 <div class="form-group validate-input">
                     <input class="form-input" type="text" name="email" id="email" placeholder=" " value="{{ old('email') }}" required autofocus>
