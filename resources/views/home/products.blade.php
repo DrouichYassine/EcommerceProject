@@ -7,6 +7,7 @@
         @foreach ($products as $product)
         <div class="col-sm-6 col-md-4 col-lg-4">
           <div class="product_box">
+          <span class="tag apparel">{{$product->category}}</span>
             <div class="img-box">
               <img src="product/{{$product->image}}" alt="">
               <div class="overlay">
