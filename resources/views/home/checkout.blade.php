@@ -6,8 +6,7 @@
     <title>Checkout</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-     <link rel="stylesheet" href="home/css/checkout.css">
-
+    <link rel="stylesheet" href="home/css/checkout.css">
 </head>
 <body>
 
@@ -109,13 +108,56 @@
                                     <p class="mb-0">Pay when you receive your order</p>
                                 </label>
                             </div>
-                            <div class="form-check">
+                            <div class="form-check mb-3">
                                 <input class="form-check-input" type="radio" name="payment_method" 
                                        id="card" value="card">
                                 <label class="form-check-label" for="card">
                                     <strong>Credit/Debit Card</strong>
                                     <p class="mb-0">Pay securely with your card</p>
                                 </label>
+                            </div>
+                            
+                            <!-- Credit Card Information (initially hidden) -->
+                            <div id="card-details" class="card-payment-details mt-3" style="display: none;">
+                                <div class="mb-3">
+                                    <label for="card_holder" class="form-label">Cardholder Name</label>
+                                    <input type="text" class="form-control" id="card_holder" name="card_holder">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="card_number" class="form-label">Card Number</label>
+                                    <input type="text" class="form-control" id="card_number" name="card_number" 
+                                           placeholder="XXXX XXXX XXXX XXXX">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="expiry_date" class="form-label">Expiry Date</label>
+                                        <input type="text" class="form-control" id="expiry_date" name="expiry_date" 
+                                               placeholder="MM/YY">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="cvv" class="form-label">CVV</label>
+                                        <input type="text" class="form-control" id="cvv" name="cvv" 
+                                               placeholder="XXX">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="radio" name="payment_method" 
+                                       id="paypal" value="paypal">
+                                <label class="form-check-label" for="paypal">
+                                    <strong>PayPal</strong>
+                                    <p class="mb-0">Pay via PayPal you can pay with your credit card if you don't have a PayPal account.</p>
+                                </label>
+                            </div>
+                            
+                            <!-- PayPal Button (initially hidden) -->
+                            <div id="paypal-button-container" class="mt-3" style="display: none;">
+                                <div class="paypal-button-placeholder">
+                                    <button type="button" class="btn btn-primary paypal-button w-100">
+                                        <i class="fab fa-paypal me-2"></i> Proceed with PayPal
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -166,9 +208,9 @@
                             <button type="submit" class="btn btn-primary btn-lg place-order-btn mt-3">
                                 <i class="fas fa-lock me-2"></i> Complete Order
                             </button>
-                            <a href="{{ route('cart.show') }}"   class="btn btn-primary btn-lg cancel-btn mt-3">
-                             Cancel
-    </a>
+                            <a href="{{ route('cart.show') }}" class="btn btn-primary btn-lg cancel-btn mt-3">
+                                Cancel
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -203,6 +245,19 @@
             $('form').on('submit', function() {
                 $('button[type="submit"]').prop('disabled', true)
                     .html('<i class="fas fa-spinner fa-spin me-2"></i> Processing...');
+            });
+            
+            // Payment method toggle
+            $('input[name="payment_method"]').change(function() {
+                // Hide all payment details first
+                $('#card-details, #paypal-button-container').hide();
+                
+                // Show the appropriate payment details
+                if ($(this).val() === 'card') {
+                    $('#card-details').show();
+                } else if ($(this).val() === 'paypal') {
+                    $('#paypal-button-container').show();
+                }
             });
         });
     </script>
