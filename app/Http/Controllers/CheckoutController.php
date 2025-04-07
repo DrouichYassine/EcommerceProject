@@ -8,7 +8,9 @@ use App\Models\Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
+use Stripe\Stripe;
+use Stripe\Charge;
+use Stripe\Exception\CardException;
 
 class CheckoutController extends Controller
 {
@@ -25,7 +27,12 @@ class CheckoutController extends Controller
             return $item->product->price * $item->quantity;
         });
 
-        return view('home.checkout', compact('cartItems', 'total', 'user'));
+        return view('home.checkout', [
+            'cartItems' => $cartItems,
+            'total' => $total,
+            'user' => $user,
+            'stripeKey' => config('services.stripe.key')
+        ]);
     }
 
     public function placeOrder(Request $request)
@@ -39,8 +46,9 @@ class CheckoutController extends Controller
             'city' => 'required|string|max:255',
             'state' => 'required|string|max:255',
             'zip_code' => 'required|string|max:20',
-            'payment_method' => 'required|string|in:cash_on_delivery,card',
-            'terms' => 'accepted'
+            'payment_method' => 'required|in:cash_on_delivery,card',
+            'terms' => 'accepted',
+            'stripeToken' => 'required_if:payment_method,card'
         ]);
 
         DB::beginTransaction();
@@ -48,14 +56,27 @@ class CheckoutController extends Controller
         try {
             $user = Auth::user();
             $cartItems = Cart::where('user_id', $user->id)->with('product')->get();
-
-            if ($cartItems->isEmpty()) {
-                throw new \Exception("Your cart is empty!");
-            }
-
             $total = $cartItems->sum(function ($item) {
                 return $item->product->price * $item->quantity;
             });
+
+            // Process Stripe payment if card selected
+            $stripeChargeId = null;
+            $paymentStatus = 'pending';
+            
+            if ($request->payment_method === 'card') {
+                Stripe::setApiKey(config('services.stripe.secret'));
+                
+                $charge = Charge::create([
+                    'amount' => $total * 100, // in cents
+                    'currency' => 'usd',
+                    'source' => $request->stripeToken,
+                    'description' => 'Order from ' . $request->email,
+                ]);
+                
+                $stripeChargeId = $charge->id;
+                $paymentStatus = 'paid';
+            }
 
             // Create order
             $order = Order::create([
@@ -70,7 +91,8 @@ class CheckoutController extends Controller
                 'state' => $request->state,
                 'zip_code' => $request->zip_code,
                 'payment_method' => $request->payment_method,
-                'payment_status' => $request->payment_method === 'card' ? 'paid' : 'pending',
+                'payment_status' => $paymentStatus,
+                'stripe_charge_id' => $stripeChargeId,
                 'status' => 'processing',
                 'total_amount' => $total,
             ]);
@@ -90,15 +112,14 @@ class CheckoutController extends Controller
 
             DB::commit();
 
-            // Regenerate session to prevent logout
-            $request->session()->regenerate();
+            return redirect()->route('order.success', $order);
 
-            return redirect()->route('order.success', $order->id);
-
+        } catch (CardException $e) {
+            DB::rollBack();
+            return back()->with('error', $e->getMessage());
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error('Order failed: ' . $e->getMessage());
-            return back()->withInput()->with('error', 'Order failed: ' . $e->getMessage());
+            return back()->with('error', 'Order failed: ' . $e->getMessage());
         }
     }
 
@@ -110,21 +131,4 @@ class CheckoutController extends Controller
 
         return view('home.order-success', compact('order'));
     }
-    public function updateStatus(Request $request)
-{
-    $order = Order::findOrFail($request->order_id);
-    
-    if ($request->status_type == 'delivery_status') {
-        $order->delivery_status = $request->status;
-    } elseif ($request->status_type == 'payment_status') {
-        $order->payment_status = $request->status;
-    }
-    
-    $order->save();
-    
-    return response()->json([
-        'success' => true,
-        'message' => 'Status updated successfully'
-    ]);
-}
 }

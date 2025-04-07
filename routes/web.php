@@ -4,8 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\StripePaymentController;
 use App\Http\Controllers\OrderController;
-use Laravel\Fortify\Features;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 use Laravel\Fortify\Http\Controllers\RegisteredUserController;
 
@@ -57,8 +57,16 @@ Route::middleware(['auth'])->group(function() {
     
     // Checkout routes
     Route::get('/checkout', [CheckoutController::class, 'showCheckout'])->name('checkout');
+    
+    // This handles the form submission
     Route::post('/place-order', [CheckoutController::class, 'placeOrder'])->name('place.order');
+    
+    // Add this new route for Stripe payment processing
+    Route::post('/stripe/payment', [StripePaymentController::class, 'processPayment'])->name('stripe.payment');
+    
+    // Success/Cancel routes
     Route::get('/order-success/{order}', [CheckoutController::class, 'orderSuccess'])->name('order.success');
+    Route::get('/payment/cancel', [StripePaymentController::class, 'cancel'])->name('payment.cancel');
     
 });
 
@@ -136,3 +144,4 @@ Route::post('/add_product', [AdminController::class, 'add_product']);
 Route::get('/delete_product/{id}', [AdminController::class, 'delete_product']);
 Route::get('/edit_product/{id}', [AdminController::class, 'edit_product']);
 Route::post('/update_product/{id}', [AdminController::class, 'update_product']);
+

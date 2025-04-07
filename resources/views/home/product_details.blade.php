@@ -56,6 +56,7 @@
             padding: 40px 0 80px;
         }
         
+        
         .product-img-container {
             position: relative;
             text-align: center;
@@ -314,10 +315,9 @@
                                     <i class="fas fa-shopping-cart"></i> Add to Cart
                                 </button>
                             </form>
-                            
                             <div class="product-meta">
-                                <p><strong>SKU:</strong> PROD-{{ $product->id }}</p>
-                                <p><strong>Category:</strong> {{ $product->category }}</p>
+                                <p><strong>SKU:</strong> PROD</p>
+                                <p><strong>Category:</strong></p>
                             </div>
                         </div>
                     </div>

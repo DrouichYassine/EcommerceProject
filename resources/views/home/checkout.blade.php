@@ -7,6 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="home/css/checkout.css">
+    <script src="https://js.stripe.com/v3/"></script>
 </head>
 <body>
 
@@ -35,7 +36,7 @@
             </div>
         @endif
 
-        <form method="POST" action="{{ route('place.order') }}">
+        <form method="POST" action="{{ route('place.order') }}" id="checkout-form">
             @csrf
             <div class="row">
                 <div class="col-md-8">
@@ -44,7 +45,8 @@
                             <h3><i class="fas fa-shipping-fast me-2"></i>Shipping Information</h3>
                         </div>
                         <div class="card-body">
-                            <div class="row">
+                        <div class="row">
+                        <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label for="first_name" class="form-label">First Name</label>
                                     <input type="text" class="form-control" id="first_name" name="first_name" 
@@ -93,6 +95,7 @@
                                 </div>
                             </div>
                         </div>
+                        </div>
                     </div>
 
                     <div class="card">
@@ -112,33 +115,23 @@
                                 <input class="form-check-input" type="radio" name="payment_method" 
                                        id="card" value="card">
                                 <label class="form-check-label" for="card">
-                                    <strong>Credit/Debit Card</strong>
+                                    <strong>Credit/Debit Card (Stripe)</strong>
                                     <p class="mb-0">Pay securely with your card</p>
                                 </label>
                             </div>
                             
-                            <!-- Credit Card Information (initially hidden) -->
-                            <div id="card-details" class="card-payment-details mt-3" style="display: none;">
+                            <!-- Stripe Card Element (initially hidden) -->
+                            <div id="stripe-card-section" class="mt-3" style="display: none;">
                                 <div class="mb-3">
-                                    <label for="card_holder" class="form-label">Cardholder Name</label>
-                                    <input type="text" class="form-control" id="card_holder" name="card_holder">
+                                    <label for="cardholder-name" class="form-label">Cardholder Name</label>
+                                    <input type="text" class="form-control" id="cardholder-name" name="cardholder_name" required>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="card_number" class="form-label">Card Number</label>
-                                    <input type="text" class="form-control" id="card_number" name="card_number" 
-                                           placeholder="XXXX XXXX XXXX XXXX">
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label for="expiry_date" class="form-label">Expiry Date</label>
-                                        <input type="text" class="form-control" id="expiry_date" name="expiry_date" 
-                                               placeholder="MM/YY">
+                                    <label class="form-label">Card Details</label>
+                                    <div id="card-element" class="form-control p-2" style="height: 40px;">
+                                        <!-- Stripe will inject the card elements here -->
                                     </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label for="cvv" class="form-label">CVV</label>
-                                        <input type="text" class="form-control" id="cvv" name="cvv" 
-                                               placeholder="XXX">
-                                    </div>
+                                    <div id="card-errors" role="alert" class="text-danger mt-2"></div>
                                 </div>
                             </div>
                             
@@ -164,7 +157,7 @@
                 </div>
 
                 <div class="col-md-4">
-                    <div class="card order-summary">
+                <div class="card order-summary">
                         <div class="card-header bg-success text-white">
                             <h3><i class="fas fa-shopping-basket me-2"></i>Order Summary</h3>
                         </div>
@@ -220,7 +213,7 @@
 
     <!-- Terms Modal -->
     <div class="modal fade" id="termsModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
+    <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Terms and Conditions</h5>
@@ -241,23 +234,90 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         $(document).ready(function() {
-            // Simple form submission handler
-            $('form').on('submit', function() {
-                $('button[type="submit"]').prop('disabled', true)
-                    .html('<i class="fas fa-spinner fa-spin me-2"></i> Processing...');
-            });
-            
-            // Payment method toggle
+            // Initialize Stripe with your publishable key
+            const stripe = Stripe('{{ config("services.stripe.key") }}');
+            const elements = stripe.elements();
+            let cardElement;
+
+            // Set up Stripe Elements when card payment is selected
             $('input[name="payment_method"]').change(function() {
-                // Hide all payment details first
-                $('#card-details, #paypal-button-container').hide();
+                $('#stripe-card-section, #paypal-button-container').hide();
                 
-                // Show the appropriate payment details
                 if ($(this).val() === 'card') {
-                    $('#card-details').show();
+                    initStripeElements();
+                    $('#stripe-card-section').show();
                 } else if ($(this).val() === 'paypal') {
                     $('#paypal-button-container').show();
                 }
+            });
+
+            function initStripeElements() {
+                if (!cardElement) {
+                    const style = {
+                        base: {
+                            fontSize: '16px',
+                            color: '#32325d',
+                            '::placeholder': {
+                                color: '#aab7c4'
+                            }
+                        },
+                        invalid: {
+                            color: '#fa755a',
+                            iconColor: '#fa755a'
+                        }
+                    };
+                    
+                    cardElement = elements.create('card', { style: style });
+                    cardElement.mount('#card-element');
+                    
+                    cardElement.on('change', function(event) {
+                        const displayError = document.getElementById('card-errors');
+                        if (event.error) {
+                            displayError.textContent = event.error.message;
+                        } else {
+                            displayError.textContent = '';
+                        }
+                    });
+                }
+            }
+
+            // Handle form submission
+            $('#checkout-form').on('submit', function(e) {
+                const paymentMethod = $('input[name="payment_method"]:checked').val();
+                const submitButton = $('button[type="submit"]');
+                
+                // Only intercept for Stripe card payments
+                if (paymentMethod === 'card') {
+                    e.preventDefault();
+                    
+                    // Disable submit button to prevent multiple submissions
+                    submitButton.prop('disabled', true)
+                        .html('<i class="fas fa-spinner fa-spin me-2"></i> Processing...');
+
+                    // Create payment token with Stripe
+                    stripe.createToken(cardElement).then(function(result) {
+                        if (result.error) {
+                            // Show error to customer
+                            $('#card-errors').text(result.error.message);
+                            submitButton.prop('disabled', false)
+                                .html('<i class="fas fa-lock me-2"></i> Complete Order');
+                        } else {
+                            // Add the token to the form
+                            $('<input>')
+                                .attr({ type: 'hidden', name: 'stripeToken', value: result.token.id })
+                                .appendTo('#checkout-form');
+                            
+                            // Add payment method (in case it was overridden)
+                            $('<input>')
+                                .attr({ type: 'hidden', name: 'payment_method', value: 'card' })
+                                .appendTo('#checkout-form');
+                            
+                            // Submit the form
+                            document.getElementById('checkout-form').submit();
+                        }
+                    });
+                }
+                // For other payment methods, let the form submit normally
             });
         });
     </script>

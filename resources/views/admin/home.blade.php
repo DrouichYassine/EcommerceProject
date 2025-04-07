@@ -97,12 +97,7 @@
                   <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center mb-4">
                       <h4 class="card-title mb-0">Recent Orders</h4>
-                      <div class="search-field">
-                        <form class="d-flex" action="{{ url('/admin/dashboard') }}" method="GET">
-                          <input type="text" name="search" class="form-control" placeholder="Search orders..." value="{{ request('search') }}">
-                          <button type="submit" class="btn btn-primary ml-2">Search</button>
-                        </form>
-                      </div>
+                      
                     </div>
                     <div class="table-responsive">
                       <table class="table table-hover">
@@ -140,7 +135,7 @@
                             </td>
                             <td>
                               <span class="badge badge-{{ $order->delivery_status == 'delivered' ? 'success' : ($order->delivery_status == 'processing' ? 'info' : 'warning') }}">
-                                {{ ucfirst($order->delivery_status) }}
+                                {{ ucfirst($order->status) }}
                               </span>
                             </td>
                             <td>{{ $order->created_at->format('d M Y') }}</td>

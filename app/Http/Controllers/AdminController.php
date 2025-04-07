@@ -177,4 +177,5 @@ class AdminController extends Controller
         $data = Category::all();
         return view('admin.show_category', compact('data'));
     }
+    
 }
