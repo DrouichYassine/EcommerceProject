@@ -30,7 +30,7 @@
                     @enderror
                 </div>
                 <div class="form-group validate-input">
-                    <input class="form-input @error('email') is-invalid @enderror" type="email" name="email" id="email" placeholder=" " value="{{ old('email') }}" required>
+                    <input class="form-input @error('email') is-invalid @enderror" type="email" name="email" id="email" placeholder=" " value="{{ old('email', request('email')) }}" required>
                     <label class="input-label" for="email">Email</label>
                     @error('email')
                         <span class="invalid-feedback" role="alert">

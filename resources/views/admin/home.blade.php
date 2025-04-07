@@ -2,6 +2,79 @@
 <html lang="en">
   <head>
     @include('admin.css')
+    <style>form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 12px 0;
+  max-width: 500px;
+}
+
+select.form-control {
+  padding: 8px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  background-color: #fff;
+  font-size: 14px;
+  flex-grow: 1;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+select.form-control:focus {
+  border-color: #80bdff;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #007bff;
+  border-color: #007bff;
+  padding: 8px 16px;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.15s ease-in-out;
+}
+
+.btn-primary:hover {
+  background-color: #0069d9;
+  border-color: #0062cc;
+}
+
+.btn-primary:focus {
+  
+}
+
+/* Status color indicators */
+select.form-control option[value="pending"] {
+  background-color: #ffeeba;
+}
+
+select.form-control option[value="processing"] {
+  background-color: #b8daff;
+}
+
+select.form-control option[value="shipped"] {
+  background-color: #c3e6cb;
+}
+
+select.form-control option[value="delivered"] {
+  background-color: #d4edda;
+}
+
+select.form-control option[value="cancelled"] {
+  background-color: red;
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+  form {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+}</style>
   </head>
   <body>
     <div class="container-scroller">
@@ -104,6 +177,7 @@
                         <thead>
                           <tr>
                             <th>Customer</th>
+                            <th>Order Number</th>
                             <th>Amount</th>
                             <th>Payment Status</th>
                             <th>Delivery Status</th>
@@ -114,7 +188,7 @@
                         <tbody>
                           @forelse($orders as $order)
                           <tr>
-                            <td>
+                            <td class="font-weight-bold text-white">
                               @if(isset($order->first_name) && isset($order->last_name))
                                 {{ $order->first_name }} {{ $order->last_name }}
                               @elseif(isset($order->first_name))
@@ -125,8 +199,9 @@
                                 {{ $order->name ?? 'N/A' }}
                               @endif
                             </td>
+                            <td><span class="font-weight-bold text-white">${{ $order->order_number }}</span></td>
                             
-                            <td><span class="font-weight-bold">${{ $order->total_amount }}</span></td>
+                            <td><span class="font-weight-bold text-white">${{ $order->total_amount }}</span></td>
                             <td>
                               <span class="badge badge-{{ $order->payment_status == 'paid' ? 'success' : ($order->payment_status == 'pending' ? 'warning' : 'danger') }}">
                                 {{ ucfirst($order->payment_status) }}
@@ -137,25 +212,21 @@
                                 {{ ucfirst($order->status) }}
                               </span>
                             </td>
-                            <td>{{ $order->created_at->format('d M Y') }}</td>
+                            <td class="font-weight-bold text-white">{{ $order->created_at->format('d M Y') }}</td>
                             <td>
-                              <div class="dropdown">
-                                <button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button" id="orderActionDropdown{{ $order->id }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                  <i class="mdi mdi-dots-vertical"></i> Actions
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="orderActionDropdown{{ $order->id }}">
-                                  @if($order->status != 'delivered')
-                                  <a class="dropdown-item d-flex align-items-center confirm-action" href="{{ url('/admin/orders/deliver/'.$order->id) }}" data-confirm="Are you sure you want to mark this order as delivered?">
-                                    <i class="mdi mdi-truck-delivery text-success mr-2"></i> Mark as Delivered
-                                  </a>
-                                  @endif
-                                  @if($order->payment_status != 'paid')
-                                  <a class="dropdown-item d-flex align-items-center confirm-action" href="{{ url('/admin/orders/paid/'.$order->id) }}" data-confirm="Are you sure you want to mark this order as paid?">
-                                    <i class="mdi mdi-cash-multiple text-success mr-2"></i> Mark as Paid
-                                  </a>
-                                  @endif
-                                </div>
-                              </div>
+                            <form action="{{ route('update') }}" method="POST">                                @csrf
+                                <input type="hidden" name="order_id" value="{{ $order->id }}">
+                                
+                                <select name="status" class="form-control">
+                                    <option value="pending" {{ $order->status == 'pending' ? 'selected' : '' }}>Pending</option>
+                                    <option value="processing" {{ $order->status == 'processing' ? 'selected' : '' }}>Processing</option>
+                                    <option value="shipped" {{ $order->status == 'shipped' ? 'selected' : '' }}>Shipped</option>
+                                    <option value="delivered" {{ $order->status == 'delivered' ? 'selected' : '' }}>Delivered</option>
+                                    <option value="cancelled" {{ $order->status == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
+                                </select>
+                                
+                                <button type="submit" class="btn btn-primary">Update Status</button>
+                            </form>
                             </td>
                           </tr>
                           @empty

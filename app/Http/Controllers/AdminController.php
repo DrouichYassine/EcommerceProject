@@ -177,5 +177,22 @@ class AdminController extends Controller
         $data = Category::all();
         return view('admin.show_category', compact('data'));
     }
+
+    public function updateOrderStatus(Request $request)
+{
+    $request->validate([
+        'order_id' => 'required|exists:orders,id',
+        'status' => 'required|in:pending,processing,shipped,delivered,cancelled',
+    ]);
+    
+    $order = Order::findOrFail($request->order_id);
+    $order->status = $request->status;
+    if ($request['status'] === 'delivered') {
+        $order->payment_status = 'paid';
+    }
+    $order->save();
+    
+    return redirect()->back()->with('success', 'Order status updated successfully!');
+}
     
 }

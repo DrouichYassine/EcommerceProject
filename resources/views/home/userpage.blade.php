@@ -317,7 +317,6 @@
     @include('home.yearlysale')
     @include('home.testimonials')
     @include('home.subscribe')
-    @include('home.instagram')
     @include('home.footer')
     
     <div id="footer-bottom">

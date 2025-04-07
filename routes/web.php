@@ -5,7 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\StripePaymentController;
-use App\Http\Controllers\OrderController;
+use App\Http\Controllers\UpdateController;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 use Laravel\Fortify\Http\Controllers\RegisteredUserController;
 
@@ -113,6 +113,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function() {
     Route::get('/orders', [AdminController::class, 'orders'])->name('admin.orders');
     Route::get('/order/{id}', [AdminController::class, 'orderDetails'])->name('admin.order.details');
     Route::post('/order/status/{id}', [AdminController::class, 'updateOrderStatus'])->name('admin.order.status');
+    Route::post('/update-order-status', [App\Http\Controllers\AdminController::class, 'updateOrderStatus'])->name('admin.update-order-status');
 });
 
 // Public product routes
@@ -145,3 +146,7 @@ Route::get('/delete_product/{id}', [AdminController::class, 'delete_product']);
 Route::get('/edit_product/{id}', [AdminController::class, 'edit_product']);
 Route::post('/update_product/{id}', [AdminController::class, 'update_product']);
 
+
+
+// In routes/web.php
+Route::post('/test-update-status', [App\Http\Controllers\AdminController::class, 'updateOrderStatus'])->name('update');

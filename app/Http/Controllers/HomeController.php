@@ -16,8 +16,9 @@ class HomeController extends Controller
 {
     public function index()
     {
+        $bannerProduct = Product::inRandomOrder()->first();
         $products = Product::paginate(9);
-        return view('home.userpage', compact('products'));
+        return view('home.userpage', compact('products', 'bannerProduct'));
     }
     
     public function redirect()

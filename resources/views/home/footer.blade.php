@@ -21,9 +21,9 @@
           <li><i class="fa fa-envelope"></i> admin@gmail.com</li>
         </ul>
         <div class="social-icons">
-          <a href="#"><i class="fab fa-facebook"></i></a>
-          <a href="#"><i class="fab fa-twitter"></i></a>
-          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="https://www.facebook.com"><i class="fab fa-facebook"></i></a>
+          <a href="https://x.com/dar_wiin_?t=4EE4DQaBhrXaQizW1e0mDA&s=09"><i class="fab fa-twitter"></i></a>
+          <a href="https://github.com/DrouichYassine/EcommerceProject"><i class="fab fa-github"></i></a>
         </div>
       </div>
     </div>

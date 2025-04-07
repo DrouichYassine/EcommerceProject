@@ -9,12 +9,12 @@
               </div>
             </div>
             <div class="col-md-5 col-sm-12">
-              <form class="subscription-form validate">
-                <div class="input-group flex-wrap">
-                  <input class="form-control btn-rounded-none" type="email" name="EMAIL" placeholder="Your email address here" required="">
-                  <button class="btn btn-medium btn-primary text-uppercase btn-rounded-none" type="submit" name="subscribe">Subscribe</button>
-                </div>
-              </form>
+                <form class="subscription-form validate" method="GET" action="{{ route('register') }}">
+                    <div class="input-group flex-wrap">
+                        <input class="form-control btn-rounded-none" type="email" name="email" id="subscribe-email" placeholder="Your email address here" required>
+                        <button class="btn btn-medium btn-primary text-uppercase btn-rounded-none" type="submit" name="subscribe">Subscribe</button>
+                    </div>
+                </form>
             </div>
           </div>
         </div>
