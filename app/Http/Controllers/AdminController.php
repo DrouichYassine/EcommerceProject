@@ -180,19 +180,37 @@ class AdminController extends Controller
 
     public function updateOrderStatus(Request $request)
 {
-    $request->validate([
+    $validated = $request->validate([
         'order_id' => 'required|exists:orders,id',
-        'status' => 'required|in:pending,processing,shipped,delivered,cancelled',
+        'status' => 'required|in:pending,processing,shipped,delivered,cancelled'
     ]);
+
+    $order = Order::findOrFail($validated['order_id']);
+    $oldStatus = $order->status;
     
-    $order = Order::findOrFail($request->order_id);
-    $order->status = $request->status;
-    if ($request['status'] === 'delivered') {
-        $order->payment_status = 'paid';
+    // Only proceed if status is actually changing
+    if ($oldStatus !== $validated['status']) {
+        
+        // Update payment_status based on new status
+        if ($validated['status'] === 'delivered') {
+            $order->payment_status = 'paid';
+        } 
+        elseif ($validated['status'] === 'cancelled') {
+            $order->payment_status = 'cancelled';
+            // No cancelled_at column, so we skip that
+        }
+        
+        // If changing FROM delivered/cancelled to another status
+        if (in_array($oldStatus, ['delivered', 'cancelled']) && 
+            !in_array($validated['status'], ['delivered', 'cancelled'])) {
+            $order->payment_status = 'pending'; // Reset to default
+        }
+        
+        $order->status = $validated['status'];
+        $order->save();
     }
-    $order->save();
-    
-    return redirect()->back()->with('success', 'Order status updated successfully!');
+
+    return back()->with('success', 'Order status updated successfully');
 }
     
 }

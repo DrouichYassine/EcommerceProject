@@ -45,26 +45,19 @@ select.form-control:focus {
 .btn-primary:focus {
   
 }
-
-/* Status color indicators */
-select.form-control option[value="pending"] {
-  background-color: #ffeeba;
-}
-
-select.form-control option[value="processing"] {
-  background-color: #b8daff;
-}
-
-select.form-control option[value="shipped"] {
-  background-color: #c3e6cb;
-}
-
 select.form-control option[value="delivered"] {
-  background-color: #d4edda;
+  background-color: #D4EDDA; 
+  color: #155724; 
 }
 
 select.form-control option[value="cancelled"] {
-  background-color: red;
+  background-color: #F8D7DA; 
+  color: #721C24; 
+}
+
+/* For the selected option in dropdown */
+select.form-control option:checked {
+  font-weight: bold;
 }
 
 /* Responsive adjustments */
@@ -74,7 +67,7 @@ select.form-control option[value="cancelled"] {
     align-items: stretch;
     gap: 8px;
   }
-}</style>
+}</style> 
   </head>
   <body>
     <div class="container-scroller">
@@ -218,9 +211,6 @@ select.form-control option[value="cancelled"] {
                                 <input type="hidden" name="order_id" value="{{ $order->id }}">
                                 
                                 <select name="status" class="form-control">
-                                    <option value="pending" {{ $order->status == 'pending' ? 'selected' : '' }}>Pending</option>
-                                    <option value="processing" {{ $order->status == 'processing' ? 'selected' : '' }}>Processing</option>
-                                    <option value="shipped" {{ $order->status == 'shipped' ? 'selected' : '' }}>Shipped</option>
                                     <option value="delivered" {{ $order->status == 'delivered' ? 'selected' : '' }}>Delivered</option>
                                     <option value="cancelled" {{ $order->status == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
                                 </select>
