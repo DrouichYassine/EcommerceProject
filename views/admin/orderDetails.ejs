@@ -1,0 +1,22 @@
+<!-- ...existing code... -->
+<div class="order-actions mt-4">
+  <% if (order.payment_status !== 'paid') { %>
+    <button 
+      onclick="markOrderAsPaid('<%= order.id %>')" 
+      class="btn btn-success mr-2">
+      Mark as Paid
+    </button>
+  <% } %>
+  
+  <% if (order.delivery_status !== 'delivered') { %>
+    <button 
+      onclick="markOrderAsDelivered('<%= order.id %>')" 
+      class="btn btn-primary">
+      Mark as Delivered
+    </button>
+  <% } %>
+</div>
+
+<!-- Make sure to include the JavaScript file -->
+<script src="/js/orderManagement.js"></script>
+<!-- ...existing code... -->

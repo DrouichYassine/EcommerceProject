@@ -124,7 +124,7 @@
                             <div id="stripe-card-section" class="mt-3" style="display: none;">
                                 <div class="mb-3">
                                     <label for="cardholder-name" class="form-label">Cardholder Name</label>
-                                    <input type="text" class="form-control" id="cardholder-name" name="cardholder_name" required>
+                                    <input type="text" class="form-control" id="cardholder-name" name="cardholder_name">
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Card Details</label>
@@ -132,24 +132,6 @@
                                         <!-- Stripe will inject the card elements here -->
                                     </div>
                                     <div id="card-errors" role="alert" class="text-danger mt-2"></div>
-                                </div>
-                            </div>
-                            
-                            <div class="form-check mb-3">
-                                <input class="form-check-input" type="radio" name="payment_method" 
-                                       id="paypal" value="paypal">
-                                <label class="form-check-label" for="paypal">
-                                    <strong>PayPal</strong>
-                                    <p class="mb-0">Pay via PayPal you can pay with your credit card if you don't have a PayPal account.</p>
-                                </label>
-                            </div>
-                            
-                            <!-- PayPal Button (initially hidden) -->
-                            <div id="paypal-button-container" class="mt-3" style="display: none;">
-                                <div class="paypal-button-placeholder">
-                                    <button type="button" class="btn btn-primary paypal-button w-100">
-                                        <i class="fab fa-paypal me-2"></i> Proceed with PayPal
-                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -241,15 +223,25 @@
 
             // Set up Stripe Elements when card payment is selected
             $('input[name="payment_method"]').change(function() {
-                $('#stripe-card-section, #paypal-button-container').hide();
+                $('#stripe-card-section').hide();
                 
                 if ($(this).val() === 'card') {
                     initStripeElements();
                     $('#stripe-card-section').show();
-                } else if ($(this).val() === 'paypal') {
-                    $('#paypal-button-container').show();
+                    $('#cardholder-name').attr('required', true);
+                } else {
+                    $('#cardholder-name').attr('required', false);
                 }
             });
+            
+            // Initialize with the default selected payment method
+            if ($('input[name="payment_method"]:checked').val() === 'card') {
+                initStripeElements();
+                $('#stripe-card-section').show();
+                $('#cardholder-name').attr('required', true);
+            } else {
+                $('#cardholder-name').attr('required', false);
+            }
 
             function initStripeElements() {
                 if (!cardElement) {

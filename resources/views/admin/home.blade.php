@@ -104,7 +104,6 @@
                         <thead>
                           <tr>
                             <th>Customer</th>
-                            
                             <th>Amount</th>
                             <th>Payment Status</th>
                             <th>Delivery Status</th>
@@ -134,7 +133,7 @@
                               </span>
                             </td>
                             <td>
-                              <span class="badge badge-{{ $order->delivery_status == 'delivered' ? 'success' : ($order->delivery_status == 'processing' ? 'info' : 'warning') }}">
+                              <span class="badge badge-{{ $order->status == 'delivered' ? 'success' : ($order->status == 'processing' ? 'info' : 'warning') }}">
                                 {{ ucfirst($order->status) }}
                               </span>
                             </td>
@@ -142,15 +141,18 @@
                             <td>
                               <div class="dropdown">
                                 <button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button" id="orderActionDropdown{{ $order->id }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                  Actions
+                                  <i class="mdi mdi-dots-vertical"></i> Actions
                                 </button>
-                                <div class="dropdown-menu" aria-labelledby="orderActionDropdown{{ $order->id }}">
-                                  <a class="dropdown-item" href="{{ url('/admin/orders/'.$order->id) }}">View Details</a>
-                                  @if($order->delivery_status != 'delivered')
-                                  <a class="dropdown-item" href="{{ url('/admin/orders/deliver/'.$order->id) }}">Mark as Delivered</a>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="orderActionDropdown{{ $order->id }}">
+                                  @if($order->status != 'delivered')
+                                  <a class="dropdown-item d-flex align-items-center confirm-action" href="{{ url('/admin/orders/deliver/'.$order->id) }}" data-confirm="Are you sure you want to mark this order as delivered?">
+                                    <i class="mdi mdi-truck-delivery text-success mr-2"></i> Mark as Delivered
+                                  </a>
                                   @endif
                                   @if($order->payment_status != 'paid')
-                                  <a class="dropdown-item" href="{{ url('/admin/orders/paid/'.$order->id) }}">Mark as Paid</a>
+                                  <a class="dropdown-item d-flex align-items-center confirm-action" href="{{ url('/admin/orders/paid/'.$order->id) }}" data-confirm="Are you sure you want to mark this order as paid?">
+                                    <i class="mdi mdi-cash-multiple text-success mr-2"></i> Mark as Paid
+                                  </a>
                                   @endif
                                 </div>
                               </div>
@@ -176,5 +178,77 @@
       </div>
     </div>
     @include('admin.script')
+    <script>
+      $(document).ready(function() {
+        // Handle confirm action clicks with improved UX
+        $('.confirm-action').on('click', function(e) {
+          e.preventDefault();
+          var message = $(this).data('confirm');
+          var actionUrl = $(this).attr('href');
+          
+          // Highlight the clicked option
+          $(this).addClass('active');
+          
+          if (confirm(message)) {
+            window.location.href = actionUrl;
+          } else {
+            // Remove highlight if canceled
+            $(this).removeClass('active');
+          }
+        });
+        
+        // Variable to store timeout for dropdown hiding
+        var dropdownTimeout;
+        
+        // Enhanced hover functionality with reduced delay for dropdown buttons
+        $('.dropdown').hover(
+          function() {
+            // Clear any existing timeout
+            clearTimeout(dropdownTimeout);
+            // Show dropdown immediately on hover
+            $(this).find('.dropdown-menu').addClass('show');
+          },
+          function() {
+            // Store 'this' reference for timeout function
+            var $dropdown = $(this);
+            // Set timeout to hide dropdown after very short delay (50ms)
+            dropdownTimeout = setTimeout(function() {
+              $dropdown.find('.dropdown-menu').removeClass('show');
+            }, 50); // Reduced from 300ms to 50ms for faster hiding
+          }
+        );
+        
+        // Keep dropdown open when hovering directly on the menu
+        $('.dropdown-menu').hover(
+          function() {
+            clearTimeout(dropdownTimeout);
+          },
+          function() {
+            var $menu = $(this);
+            dropdownTimeout = setTimeout(function() {
+              $menu.removeClass('show');
+            }, 50); // Reduced from 300ms to 50ms for faster hiding
+          }
+        );
+        
+        // Hide dropdowns when clicking elsewhere on the page
+        $(document).on('click', function(e) {
+          if (!$(e.target).closest('.dropdown').length) {
+            $('.dropdown-menu').removeClass('show');
+          }
+        });
+        
+        // Enhanced hover effect for dropdown items with better visual feedback
+        $('.dropdown-item').hover(
+          function() {
+            $(this).addClass('active');
+            $(this).css('cursor', 'pointer');
+          },
+          function() {
+            $(this).removeClass('active');
+          }
+        );
+      });
+    </script>
   </body>
 </html>
