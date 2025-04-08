@@ -4,41 +4,44 @@
         <h2>Our Products</h2>
       </div>
       <div class="row">
-        @foreach ($products as $product)
-        <div class="col-sm-6 col-md-4 col-lg-4">
-          <div class="product_box">
-            <div class="img-box">
-              <img src="product/{{$product->image}}" alt="">
-              <div class="overlay">
-                <div class="options">
-                  <a href="javascript:void(0)" onclick="openQuantityModal('{{ $product->id }}', '{{ $product->title }}', '{{ $product->quantity }}')" class="option1">Add to Cart</a>
-                  <a href="{{ url('product_details', $product->id) }}" class="option2">View Details</a>
+      @foreach ($products as $product)
+            <div class="col-sm-6 col-md-4 col-lg-4">
+              <div class="product_box">
+                <div class="img-box">
+                  <img src="product/{{$product->image}}" alt="">
+                  <div class="overlay">
+                    <div class="options">
+                      <a href="javascript:void(0)" onclick="openQuantityModal('{{ $product->id }}', '{{ $product->title }}', '{{ $product->quantity }}')" class="option1">Add to Cart</a>
+                      <a href="{{ url('product_details', $product->id) }}" class="option2">View Details</a>
+                    </div>
+                  </div>
+                </div>
+                <div class="detail-box">
+                  <div class="title-price-row">
+                    <div class="product-title">
+                      <h5>{{ $product->title }}</h5>
+                    </div>
+                    <div class="product-price">
+                      @if($product->discount_price)
+                        <h6>
+                          <span class="original-price">${{ $product->price }}</span>
+                          <span class="discount-price">${{ $product->discount_price }}</span>
+                        </h6>
+                      @else
+                        <h6>${{ $product->price }}</h6>
+                      @endif
+                    </div>
+                  </div>
+                  <div class="product-category">
+                    <span class="category-badge">{{ $product->category }}</span>
+                  </div>
+                  <p class="product-description">
+                    {{ \Illuminate\Support\Str::limit($product->description, 100, '...') }}
+                  </p>
                 </div>
               </div>
             </div>
-            <div class="detail-box">
-              <div class="title-price-row">
-                <div class="product-title">
-                  <h5>{{ $product->title }}</h5>
-                </div>
-                <div class="product-price">
-                  @if($product->discount_price)
-                    <h6>
-                      <span class="original-price">${{ $product->price }}</span>
-                      <span class="discount-price">${{ $product->discount_price }}</span>
-                    </h6>
-                  @else
-                    <h6>${{ $product->price }}</h6>
-                  @endif
-                </div>
-              </div>
-              <p class="product-description">
-                {{ \Illuminate\Support\Str::limit($product->description, 100, '...') }}
-              </p>
-            </div>
-          </div>
-        </div>
-        @endforeach
+          @endforeach
       </div>
       
       @if(method_exists($products, 'links'))
@@ -170,7 +173,6 @@
   .original-price {
     text-decoration: line-through;
     color: #999;
-    font-size: 14px;
     display: block;
   }
   
@@ -186,6 +188,22 @@
     height: 60px;
     overflow: hidden;
   }
+  .product-category {
+  margin: 5px 0;
+  font-size: 20px;
+  font-weight:600;
+  }
+
+.category-badge {
+  font-size: 0.8rem;
+  text-align: center;
+  color: white;
+  background-color:black;
+  padding: 2px 8px;
+  border-radius: 12px;
+  display: inline-block;
+  width: 100px;
+}
   
   .options {
     display: flex;

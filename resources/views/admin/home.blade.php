@@ -2,13 +2,15 @@
 <html lang="en">
   <head>
     @include('admin.css')
-    <style>form {
+  <style>
+form {
   display: flex;
   align-items: center;
   gap: 10px;
   margin: 12px 0;
   max-width: 500px;
 }
+
 
 select.form-control {
   padding: 8px 12px;
