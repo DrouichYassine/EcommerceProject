@@ -52,8 +52,7 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/remove_cart/{id}', [HomeController::class, 'remove_cart'])->name('cart.remove');
     
     // Order routes
-    Route::get('/orders', [HomeController::class, 'orders'])->name('orders');
-    Route::get('/order/{id}', [HomeController::class, 'orderDetails'])->name('order.details');
+    
     
     // Checkout routes
     Route::get('/checkout', [CheckoutController::class, 'showCheckout'])->name('checkout');
@@ -94,7 +93,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function() {
     Route::put('/product/{id}', [AdminController::class, 'updateProduct'])->name('admin.product.update');
     Route::delete('/product/{id}', [AdminController::class, 'destroyProduct'])->name('admin.product.destroy');
     
-    // Legacy route names for backward compatibility - FIXED
+    // Legacy route names for backward compatibility - FIXED    
     Route::get('/view_category', [AdminController::class, 'createCategory'])->name('admin.category.view');
     Route::post('/add_category', [AdminController::class, 'storeCategory'])->name('admin.category.add');
     Route::get('/show_category', [AdminController::class, 'categories'])->name('admin.category.show');
@@ -150,3 +149,4 @@ Route::post('/update_product/{id}', [AdminController::class, 'update_product']);
 
 // In routes/web.php
 Route::post('/test-update-status', [App\Http\Controllers\AdminController::class, 'updateOrderStatus'])->name('update');
+Route::post('/update-cart', [HomeController::class, 'updateCart'])->name('update.cart');

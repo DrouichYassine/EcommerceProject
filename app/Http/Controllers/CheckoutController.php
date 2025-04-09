@@ -24,7 +24,8 @@ class CheckoutController extends Controller
         }
 
         $total = $cartItems->sum(function ($item) {
-            return $item->product->price * $item->quantity;
+            $price = $item->discount_price ? $item->discount_price : $item->price;
+            return $price * $item->quantity;
         });
 
         return view('home.checkout', [

@@ -18,6 +18,7 @@ class HomeController extends Controller
     {
         $bannerProduct = Product::inRandomOrder()->first();
         $products = Product::paginate(9);
+        $categories = Product::select('category')->distinct()->orderBy('category')->get()->pluck('category');
         return view('home.userpage', compact('products', 'bannerProduct'));
     }
     
@@ -44,8 +45,9 @@ class HomeController extends Controller
     
     public function all_products()
     {
+        $categories = Product::select('category')->distinct()->orderBy('category')->get()->pluck('category');
         $products = Product::paginate(9);
-        return view('home.products', compact('products'));
+        return view('home.products', compact('products','categories'));
     }
     
     public function product_details($id)
@@ -74,6 +76,7 @@ class HomeController extends Controller
             $cart->price = $product->price;
             $cart->image = $product->image;
             $cart->quantity = $request->quantity ?? 1;
+            $cart->discount_price = $product->discount_price ?? null;
             
             $cart->save();
             
@@ -165,4 +168,16 @@ class HomeController extends Controller
         // If no product is found, show the not found page
         return view('home.product_not_found', compact('search'));
     }
+    public function updateCart(Request $request)
+{
+    $quantities = $request->input('quantities');
+    
+    foreach ($quantities as $id => $quantity) {
+        Cart::where('id', $id)
+            ->where('user_id', Auth::id())
+            ->update(['quantity' => $quantity]);
+    }
+    
+    return redirect()->back()->with('message', 'Cart updated successfully');
+}
 }

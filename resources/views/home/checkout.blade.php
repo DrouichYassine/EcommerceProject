@@ -84,7 +84,7 @@
                                            value="{{ old('city', Auth::user()->city ?? '') }}" required>
                                 </div>
                                 <div class="col-md-4 mb-3">
-                                    <label for="state" class="form-label">State</label>
+                                    <label for="state" class="form-label">Region</label>
                                     <input type="text" class="form-control" id="state" name="state" 
                                            value="{{ old('state', Auth::user()->state ?? '') }}" required>
                                 </div>
@@ -153,7 +153,7 @@
                                         <h6>{{ $item->product->title }}</h6>
                                         <div>Qty: {{ $item->quantity }}</div>
                                     </div>
-                                    <div>${{ number_format($item->product->price * $item->quantity, 2) }}</div>
+                                    <div>${{ number_format(($item->discount_price ?: $item->price) * $item->quantity, 2) }}</div>
                                 </div>
                                 @endforeach
                             </div>
