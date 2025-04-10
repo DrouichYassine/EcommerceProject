@@ -105,14 +105,12 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function() {
     Route::post('/add_product', [AdminController::class, 'storeProduct'])->name('admin.product.add');
     Route::get('/show_product', [AdminController::class, 'products'])->name('admin.product.show');
     Route::get('/delete_product/{id}', [AdminController::class, 'destroyProduct'])->name('admin.product.delete');
-    Route::get('/update_product/{id}', [AdminController::class, 'editProduct'])->name('admin.product.edit');
-    Route::post('/update_product_confirm/{id}', [AdminController::class, 'updateProduct'])->name('admin.product.update');
-    
+
     // Order management routes
     Route::get('/orders', [AdminController::class, 'orders'])->name('admin.orders');
     Route::get('/order/{id}', [AdminController::class, 'orderDetails'])->name('admin.order.details');
     Route::post('/order/status/{id}', [AdminController::class, 'updateOrderStatus'])->name('admin.order.status');
-    Route::post('/update-order-status', [App\Http\Controllers\AdminController::class, 'updateOrderStatus'])->name('admin.update-order-status');
+    
 });
 
 // Public product routes
@@ -142,8 +140,10 @@ Route::get('/delete_category/{id}', [AdminController::class, 'delete_category'])
 Route::get('/view_product', [AdminController::class, 'view_product']);
 Route::post('/add_product', [AdminController::class, 'add_product']);
 Route::get('/delete_product/{id}', [AdminController::class, 'delete_product']);
-Route::get('/edit_product/{id}', [AdminController::class, 'edit_product']);
-Route::post('/update_product/{id}', [AdminController::class, 'update_product']);
+Route::get('/edit_product/{id}', [AdminController::class, 'edit_product'])
+    ->name('admin.product.edit');
+    Route::put('/update_product_confirm/{id}', [AdminController::class, 'updateProduct'])
+    ->name('admin.product.update');
 
 
 

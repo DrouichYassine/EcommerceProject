@@ -27,8 +27,9 @@
                       </div>
                     @endif
                     
-                    <form class="forms-sample" action="{{ url('update_product', $product->id) }}" method="POST" enctype="multipart/form-data">
+                    <form class="forms-sample" action="{{ route('admin.product.update', $product->id) }}" method="POST" enctype="multipart/form-data">
                       @csrf
+                      @method('PUT')
                       <div class="form-group">
                         <label for="title">Product Title</label>
                         <input type="text" class="form-control" name="title" value="{{ $product->title }}" required>
@@ -50,15 +51,15 @@
                         <input type="number" class="form-control" name="quantity" value="{{ $product->quantity }}" required min="0">
                       </div>
                       <div class="form-group">
-                        <label for="category">Category</label>
-                        <select class="form-control" name="category" required>
-                          <option value="{{ $product->category }}" selected>{{ $product->category }}</option>
-                          @foreach($categories as $category)
-                            @if($category->category_name != $product->category)
-                              <option value="{{ $category->category_name }}">{{ $category->category_name }}</option>
-                            @endif
-                          @endforeach
-                        </select>
+                          <label for="category_id">Category</label>
+                          <select class="form-control" name="category_id" required>
+                              @foreach($categories as $category)
+                                  <option value="{{ $category->id }}" 
+                                      {{ $product->category_id == $category->id ? 'selected' : '' }}>
+                                      {{ $category->category_name }}
+                                  </option>
+                              @endforeach
+                          </select>
                       </div>
                       <div class="form-group">
                         <label>Current Product Image</label>
@@ -68,7 +69,7 @@
                         <label>Change Product Image</label>
                         <input type="file" name="image" class="file-upload-default">
                         <div class="input-group">
-                          <input type="file" name="image" class="form-control" required style="height: auto;">
+                          <input type="file" name="image" class="form-control"  style="height: auto;">
                         </div>
                       </div>
                       <button type="submit" class="btn btn-primary mr-2">Update</button>

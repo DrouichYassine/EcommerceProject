@@ -58,13 +58,15 @@
                         <input type="number" class="form-control" name="quantity" placeholder="Quantity" required min="0">
                       </div>
                       <div class="form-group">
-                        <label for="category">Category</label>
-                        <select class="form-control" name="category" required>
-                          <option value="" selected disabled>Select Category</option>
-                          @foreach($categories as $category)
-                            <option value="{{ $category->category_name }}">{{ $category->category_name }}</option>
-                          @endforeach
-                        </select>
+                          <label for="category_id">Category</label>
+                          <select class="form-control" name="category_id" required>
+                              <option value="">Select Category</option>
+                              @foreach($categories as $category)
+                                  <option value="{{ $category->id }}" @selected(old('category_id', $product->category_id ?? '') == $category->id)>
+                                      {{ $category->category_name }}
+                                  </option>
+                              @endforeach
+                          </select>
                       </div>
                       <div class="form-group">
                         <label>Product Image</label>

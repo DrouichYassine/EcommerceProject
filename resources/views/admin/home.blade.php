@@ -46,9 +46,6 @@ select.form-control:focus {
   border-color: #0062cc;
 }
 
-.btn-primary:focus {
-  
-}
 select.form-control option[value="delivered"] {
   background-color: #D4EDDA; 
   color: #155724; 

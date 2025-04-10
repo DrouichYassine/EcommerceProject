@@ -7,7 +7,12 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\User;
 use App\Models\Order;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
+
+
 use Illuminate\Support\Facades\File;
+
 
 class AdminController extends Controller
 {
@@ -28,10 +33,33 @@ class AdminController extends Controller
 
     public function delete_category($id)
     {
-        $category = Category::find($id);
-        $category->delete();
+    \DB::transaction(function () use ($id) {
+        // 1. Find the category
+        $category = Category::findOrFail($id);
         
-        return redirect()->back()->with('message', 'Category Deleted Successfully');
+        // 2. Get all products in this category
+        $products = Product::where('category_id', $id)->get();
+        
+        // 3. Delete each product and its dependencies
+        foreach ($products as $product) {
+            // First delete all order items for this product
+            \DB::table('order_items')->where('product_id', $product->id)->delete();
+            
+            // Then delete the product image
+            $imagePath = public_path('product/'.$product->image);
+            if (File::exists($imagePath)) {
+                File::delete($imagePath);
+            }
+            
+            // Finally delete the product
+            $product->delete();
+        }
+        
+        // 4. Now delete the category
+        $category->delete();
+    });
+    
+    return redirect()->back()->with('message', 'Category and all associated products deleted successfully');
     }
 
     public function all_product()
@@ -49,24 +77,39 @@ class AdminController extends Controller
 
     public function add_product(Request $request)
     {
-        $product = new Product;
+    $validated = $request->validate([
+        'title' => 'required',
+        'description' => 'required',
+        'price' => 'required|numeric',
+        'quantity' => 'required|integer',
+        'discount_price' => 'nullable|numeric',
+        'category_id' => 'required|exists:categories,id',
+        'image' => 'required|image'
+    ]);
 
-        $product->title = $request->title;
-        $product->description = $request->description;
-        $product->price = $request->price;
-        $product->quantity = $request->quantity;
-        $product->discount_price = $request->discount_price;
-        $product->category = $request->category;
+    $product = new Product();
+    
+    // Get category name
+    $category = Category::findOrFail($request->category_id);
 
-        $image = $request->image;
-        $imagename = time() . '.' . $image->getClientOriginalExtension();
-        $request->image->move('product', $imagename);
+    $product->fill([
+        'title' => $request->title,
+        'description' => $request->description,
+        'price' => $request->price,
+        'quantity' => $request->quantity,
+        'discount_price' => $request->discount_price,
+        'category_id' => $request->category_id,
+        'category' => $category->category_name // Set both fields
+    ]);
 
-        $product->image = $imagename;
+    // Handle image
+    $imageName = time().'.'.$request->image->extension();  
+    $request->image->move(public_path('product'), $imageName);
+    $product->image = $imageName;
 
-        $product->save();
+    $product->save();
 
-        return redirect()->back()->with('message', 'Product Added Successfully');
+    return redirect()->back()->with('message', 'Product Added Successfully');
     }
 
     public function show_product()
@@ -98,53 +141,52 @@ class AdminController extends Controller
         return view('admin.edit_product', compact('product', 'categories'));
     }
 
-    public function update_product(Request $request, $id)
+    public function updateProduct(Request $request, $id)
     {
-        $product = Product::find($id);
+    // Debugging - check what's coming in
+    \Log::debug('Update Product Request:', $request->all());
+    
+    $validated = $request->validate([
+        'title' => 'required',
+        'description' => 'required',
+        'price' => 'required|numeric',
+        'discount_price' => 'nullable|numeric',
+        'category_id' => 'required|exists:categories,id',
+        'quantity' => 'required|integer',
+        'image' => 'nullable|image'
+    ]);
 
-        $product->title = $request->title;
-        $product->description = $request->description;
-        $product->price = $request->price;
-        $product->discount_price = $request->discount_price;
-        $product->quantity = $request->quantity;
-        $product->category = $request->category;
+    $product = Product::findOrFail($id);
+    $category = Category::findOrFail($request->category_id);
 
-        if ($request->hasFile('image')) {
-            $image_path = public_path('product/' . $product->image);
-            if (File::exists($image_path)) {
-                File::delete($image_path);
-            }
+    \Log::debug('Before Update:', $product->toArray());
 
-            $image = $request->image;
-            $imagename = time() . '.' . $image->getClientOriginalExtension();
-            $request->image->move('product', $imagename);
-            $product->image = $imagename;
+    $product->update([
+        'title' => $request->title,
+        'description' => $request->description,
+        'price' => $request->price,
+        'discount_price' => $request->discount_price,
+        'quantity' => $request->quantity,
+        'category_id' => $request->category_id,
+        'category' => $category->category_name
+    ]);
+
+    if ($request->hasFile('image')) {
+        \Log::debug('Updating image...');
+        $oldImage = public_path('product/'.$product->image);
+        if (file_exists($oldImage)) {
+            unlink($oldImage);
         }
-
+        
+        $imageName = time().'.'.$request->image->extension();
+        $request->image->move(public_path('product'), $imageName);
+        $product->image = $imageName;
         $product->save();
-
-        return redirect()->back()->with('message', 'Product Updated Successfully');
     }
 
-    public function update_product_confirm(Request $request, $id)
-    {
-        $product = Product::find($id);
-
-        $product->title = $request->title;
-        $product->description = $request->description;
-        $product->price = $request->price;
-        $product->discount_price = $request->dis_price;
-        $product->category = $request->category;
-        $product->quantity = $request->quantity;
-        $image = $request->image;
-        if ($image) {
-            $imagename = time() . '.' . $image->getClientOriginalExtension();
-            $request->image->move('product', $imagename);
-            $product->image = $imagename;
-        }
-        $product->save();
-
-        return redirect()->back()->with('message', 'Product Updated successfully');
+    \Log::debug('After Update:', $product->fresh()->toArray());
+    
+    return redirect()->back()->with('message', 'Product updated successfully');
     }
 
     public function index()

@@ -13,13 +13,13 @@
             <a class="nav-link me-3 active" href="{{ url('/') }}">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link me-3" href="#company-services">Services</a>
+            <a class="nav-link me-3" href="{{ url('/') }}#company-services">Services</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link me-3" href="#our-products">Products</a>
+            <a class="nav-link me-3" href="{{ url('/') }}#our-products">Products</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link me-3" href="#yearly-sale">Sale</a>
+            <a class="nav-link me-3" href="{{ url('/') }}#yearly-sale">Sale</a>
           </li>
           
           <!-- Search Bar -->
