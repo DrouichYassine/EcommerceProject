@@ -2,6 +2,8 @@
 <html lang="en">
   <head>
     @include('admin.css')
+    <title>Dashboard</title>
+    <link rel="shortcut icon" href="{{asset('images/MMY Champions.png')}}" type="image/x-icon">
   <style>
 form {
   display: flex;
