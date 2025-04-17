@@ -289,7 +289,7 @@
                     // Create payment token with Stripe
                     stripe.createToken(cardElement).then(function(result) {
                         if (result.error) {
-                            // Show error to customer
+                            
                             $('#card-errors').text(result.error.message);
                             submitButton.prop('disabled', false)
                                 .html('<i class="fas fa-lock me-2"></i> Complete Order');
@@ -299,7 +299,7 @@
                                 .attr({ type: 'hidden', name: 'stripeToken', value: result.token.id })
                                 .appendTo('#checkout-form');
                             
-                            // Add payment method (in case it was overridden)
+                            // Add payment method
                             $('<input>')
                                 .attr({ type: 'hidden', name: 'payment_method', value: 'card' })
                                 .appendTo('#checkout-form');
@@ -309,7 +309,6 @@
                         }
                     });
                 }
-                // For other payment methods, let the form submit normally
             });
         });
     </script>

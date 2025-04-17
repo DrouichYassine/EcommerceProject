@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Product Management</title>
+    <link rel="shortcut icon" href="{{asset('images/MMY Champions.png')}}" type="image/x-icon">
     @include('admin.css')
     <style>
       .form-control {
